@@ -8,11 +8,17 @@ Coronavirus quarantine time at home, brought me to learn node. I began to do a s
 
 ##### Installation
 
-`npm install portera`
+`npm install portera --save-dev`
 
 ##### Portera
 
-Portera is a client/server that run on port 3001 by default, you can change this using environment variable PORTERA_PORT. To run the server exec **portera**, once running you can open your favorite browser http://<portera_server_ip>:3001 and you should
+Portera is a client/server that run on port 3001 by default, you can change this using environment variable PORTERA_PORT. To run the server exec **npx portera**, once running you can open your favorite browser http://<portera_server_ip>:3001 and also you should have wonderful console logs
+
+Sample web:
+![Sample Web Image](https://github.com/csegura/portera/docs/portera_web.png)
+
+Sample Console:
+![Sample Console Image](https://github.com/csegura/portera/docs/portera_console.png)
 
 ##### Use portera in your code
 
