@@ -1,14 +1,13 @@
 {
-  "name": "portera",
+  "name": "porteras",
   "version": "0.0.7",
   "description": "Awesome remote logs for node. Portera always listen!!",
-  "main": "app.js",
+  "main": "./lib/portera.js",
   "bin": {
-    "portera": "./bin/app"
+    "portera": "./bin/app.js"
   },
   "dependencies": {
     "chalk": "^4.0.0",
-    "error-polyfill": "^0.1.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "socket.io": "^2.2.0"
