@@ -1,10 +1,10 @@
 {
-  "name": "p_o_r_t_e_ra",
-  "version": "0.0.5",
+  "name": "portera",
+  "version": "0.0.7",
   "description": "Awesome remote logs for node. Portera always listen!!",
   "main": "app.js",
   "bin": {
-    "portera": "node ./app.js"
+    "portera": "./bin/app"
   },
   "dependencies": {
     "chalk": "^4.0.0",
