@@ -119,7 +119,7 @@ function highlightWeb(json, noCompatible) {
   if (noCompatible) {
     json = json
       .replace(/(?:\\\\[rn])+/g, '\n') // pretty cr
-      .replace(/\\n/g, ' ') // \n by <br/>
+      .replace(/\\n/g, '\n') // \n by <br/>
       .replace(/\\"/g, "'"); // change \" by '
   }
 
