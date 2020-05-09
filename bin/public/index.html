@@ -11,13 +11,12 @@
 
   <body class="bg-gray-900 flex justify-center mb-32">
     <div class="text-white lg:container bg-transparent">
-      <!-- fixed text-gray-800 font-bold bg-gray-600 top-0 left-0 w-18 -->
-      <div class="fixed p-0 right-0">
+      <div class="flex fixed right-0 z-100 h-6 pr-10">
         <button id="clearScreen" class="hover:bg-gray-400 py-0 px-2 text-xs">
           clear
         </button>
         <button id="clearAllLogs" class="hover:bg-gray-400 py-0 px-2 text-xs">
-          clear storage
+          clear session
         </button>
         <button id="toogleKlog" class="hover:bg-gray-400 py-0 px-2 text-xs">
           hide logs
@@ -37,7 +36,7 @@
 
         <!-- <p class="float right bg-gray-900 text-white text-xs">p_o_r_t_e_r_a</p>  -->
       </div>
-      <div id="log"></div>
+      <div id="log" class=""></div>
     </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2.2.0/dist/socket.io.js"></script>
