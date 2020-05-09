@@ -25,25 +25,20 @@ io.on('connection', (socket) => {
 });
 
 server.listen(port, '0.0.0.0', () => {
-  console.log('Server is running on port', chalk.green(port));
+  console.log(chalk.yellow('p_o_r_t_e_r_a'), 'server is running on port', chalk.green(port));
   console.log('Output', chalk.cyan(consoleMode));
   console.log('Watting for logs');
 });
 
 function logConsole(message) {
-  const [kind, parts] = message;
-  let log = {
-    time: new Date(),
-    kind: kind,
-    args: parts,
-  };
-
   const logTheme = {
     log: chalk.gray,
     info: chalk.white,
     warn: chalk.yellow,
     error: chalk.red,
     trace: chalk.orange,
+    assert: chalk.cyan,
+    stack: chalk.green,
   };
 
   const highlightTheme = {
@@ -88,12 +83,12 @@ function logConsole(message) {
     );
   };
 
-  const color = logTheme[log.kind] || chalk.red;
+  const color = logTheme[message.kind] || chalk.red;
 
-  const fmtTime = chalk.magenta(log.time.toTimeString().substring(0, 8));
-  const fmtKind = color(`[${log.kind.padStart(5)}]`);
+  const fmtTime = chalk.magenta(new Date(message.time).toTimeString().substring(0, 8));
+  const fmtKind = color(`[${message.kind.padStart(5)}]`);
 
-  let args = log.args.map((part) => {
+  let parts = message.args.map((part) => {
     if (typeof part === 'object') {
       if (consoleMode === 'AWESOME') {
         part = highlightConsole(part, true);
@@ -106,5 +101,5 @@ function logConsole(message) {
     return part;
   });
 
-  console.log(`${fmtTime} ${fmtKind}`, ...args);
+  console.log(`${fmtTime} ${fmtKind}`, ...parts);
 }
