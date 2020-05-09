@@ -104,11 +104,11 @@ function elemRow(log) {
 }
 
 function elemInfo(log) {
-  const elem = $("<div>", { class: "font-mono text-xs text-pink-600 w-16" });
+  const elem = $("<div>", { class: "font-mono text-xs text-pink-600 w-18" });
   elem.addClass(logStatus[log.kind].bg_color);
   const bullet = $("<span>", { class: `${logStatus[log.kind].bullet_color}` });
   bullet.html(`&nbsp;${logStatus[log.kind].bullet}&nbsp;`);
-  elem.html(moment(log.time).format("mm:ss"));
+  elem.html(moment(log.time).format("hh:mm:ss"));
   elem.append(bullet);
   return elem;
 }
@@ -118,7 +118,7 @@ function elemContent(log) {
   const elem = $("<div>", { class: "font-mono text-xs text-gray-600 w-full break-all" });
   elem.addClass(logStatus[log.kind].bg_color);
   parseArgs(elem, log.args);
-  const delta = $("<div>", { class: "float-right text-yellow-200 text-xs mr-5 z-40" });
+  const delta = $("<div>", { class: "float-right text-yellow-200 text-xs mr-5" });
   delta.html(`${log.delta}ms`);
   div.append(delta, elem);
   return div;
