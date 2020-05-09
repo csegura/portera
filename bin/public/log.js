@@ -59,20 +59,17 @@ const logStatus = {
   },
 };
 
-renderjson.set_icons("+", "-");
-renderjson.set_show_to_level(1);
-
 function parseArgs(elem, args) {
   if (args.length == 1) {
     if (typeof args[0] === "object") {
-      elem.append(renderjson(args[0]));
+      elem.append(_renderjson(args[0]));
     } else {
       elem.html(args[0]);
     }
   } else {
     args.map((arg) => {
       if (typeof arg === "object") {
-        elem.append(renderjson(arg));
+        elem.append(_renderjson(arg));
       } else {
         elem.append($("<div>").html(arg));
       }
@@ -81,8 +78,10 @@ function parseArgs(elem, args) {
 }
 
 // renderjson
-function renderjson(args) {
-  console.log(args);
+renderjson.set_icons("+", "-");
+renderjson.set_show_to_level(1);
+
+function _renderjson(args) {
   return $("<div>", { class: ".json" }).append(renderjson(args));
 }
 
