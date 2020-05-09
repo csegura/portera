@@ -51,13 +51,24 @@ const logStatus = {
     bullet: '&#9654',
     bullet_color: ['text-teal-600'],
   },
+  assert: {
+    visible: true,
+    bg_color: ['bg-red-900', 'bg-opacity-25'],
+    bullet: '&#9654',
+    bullet_color: ['text-red-600'],
+  },
+  stack: {
+    visible: true,
+    bg_color: ['bg-blue-900', 'bg-opacity-25'],
+    bullet: '&#9654',
+    bullet_color: ['text-blue-600'],
+  },
 };
 
 function parse(parts) {
   let result = parts;
   if (parts.length == 1) {
     if (typeof parts[0] === 'Object') {
-      //!= 'string' && typeof parts[0] != 'number') {
       result = highlightWeb(parts[0], true);
     } else {
       result = parts[0];
@@ -160,7 +171,6 @@ $('#clearAllLogs').click(() => {
 /**
  * Session
  */
-
 function saveLog(log) {
   allLogs.push(log);
   localStorage.setItem('allLogs', JSON.stringify(allLogs));
