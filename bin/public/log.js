@@ -6,17 +6,11 @@ let lastTime = Date.now();
 
 // On log received
 socket.on('log', (message) => {
-  const [kind, parts] = message;
-  const receivedTime = Date.now();
-  let log = {
-    time: receivedTime,
-    kind: kind,
-    args: parts,
-    delta: receivedTime - lastTime,
-  };
-  lastTime = receivedTime;
-  renderLogEntry(log);
-  saveLog(log);
+  const logTime = message.time;
+  message.delta = logTime - lastTime;
+  lastTime = logTime;
+  renderLogEntry(message);
+  saveLog(message);
 });
 
 // https://unicode-table.com/es/#miscellaneous-symbols
@@ -68,7 +62,7 @@ const logStatus = {
 function parse(parts) {
   let result = parts;
   if (parts.length == 1) {
-    if (typeof parts[0] === 'Object') {
+    if (typeof parts[0] === 'object') {
       result = highlightWeb(parts[0], true);
     } else {
       result = parts[0];
