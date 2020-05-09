@@ -1,33 +1,33 @@
 #!/usr/bin/env node
 
-const http = require('http');
-const express = require('express');
-const path = require('path');
-const socketio = require('socket.io');
+const http = require("http");
+const express = require("express");
+const path = require("path");
+const socketio = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-const chalk = require('chalk');
+const chalk = require("chalk");
 
-const publicDirectoryPath = path.join(__dirname, './public');
+const publicDirectoryPath = path.join(__dirname, "./public");
 
 const port = process.env.PORTERA_PORT || 3001;
-const consoleMode = process.env.PORTERA || 'AWESOME';
+const consoleMode = process.env.PORTERA || "AWESOME";
 
 app.use(express.static(publicDirectoryPath));
 
-io.on('connection', (socket) => {
-  socket.on('log', (message) => {
-    io.emit('log', message);
+io.on("connection", (socket) => {
+  socket.on("log", (message) => {
+    io.emit("log", message);
     logConsole(message);
   });
 });
 
-server.listen(port, '0.0.0.0', () => {
-  console.log(chalk.yellow('p_o_r_t_e_r_a'), 'server is running on port', chalk.green(port));
-  console.log('Output', chalk.cyan(consoleMode));
-  console.log('Watting for logs');
+server.listen(port, "0.0.0.0", () => {
+  console.log(chalk.yellow("p_o_r_t_e_r_a"), "server is running on port", chalk.green(port));
+  console.log("Output", chalk.cyan(consoleMode));
+  console.log("Watting for logs");
 });
 
 function logConsole(message) {
@@ -42,23 +42,23 @@ function logConsole(message) {
   };
 
   const highlightTheme = {
-    string: '#2a9292',
-    number: '#aa573c',
-    boolean: '#b22222',
-    null: '#955ae7',
-    key: '#8b8792',
+    string: "#2a9292",
+    number: "#aa573c",
+    boolean: "#b22222",
+    null: "#955ae7",
+    key: "#8b8792",
   };
 
   const highlightConsole = (json, noCompatible) => {
-    if (typeof json != 'string') {
+    if (typeof json != "string") {
       json = JSON.stringify(json, undefined, 2);
     }
     // syntax on web is more clear with this replacements
     noCompatible = noCompatible || false;
     if (noCompatible) {
       json = json
-        .replace(/(?:\\\\[rn])+/g, '\n') // pretty cr
-        .replace(/\\n/g, '\n') // \n by <br/>
+        .replace(/(?:\\\\[rn])+/g, "\n") // pretty cr
+        .replace(/\\n/g, "\n") // \n by <br/>
         .replace(/\\"/g, "'"); // change \" by '
     }
 
@@ -89,13 +89,13 @@ function logConsole(message) {
   const fmtKind = color(`[${message.kind.padStart(5)}]`);
 
   let parts = message.args.map((part) => {
-    if (typeof part === 'object') {
-      if (consoleMode === 'AWESOME') {
+    if (typeof part === "object") {
+      if (consoleMode === "AWESOME") {
         part = highlightConsole(part, true);
-      } else if (consoleMode === 'NORMAL') {
+      } else if (consoleMode === "NORMAL") {
         part = highlightConsole(part, false);
       } else {
-        part = part.join('\n');
+        part = part.join("\n");
       }
     }
     return part;

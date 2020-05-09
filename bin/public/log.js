@@ -62,52 +62,33 @@ const logStatus = {
 renderjson.set_icons("+", "-");
 renderjson.set_show_to_level(1);
 
-function parse(parts) {
-  let result = parts;
-  if (parts.length == 1) {
-    if (typeof parts[0] === "object") {
-      result = highlightWeb(parts[0], true);
+function parseArgs(elem, args) {
+  if (args.length == 1) {
+    if (typeof args[0] === "object") {
+      elem.append(renderjson(args[0]));
     } else {
-      result = parts[0];
+      elem.html(args[0]);
     }
   } else {
-    result = parts.map((part) => (typeof part === "object" ? highlightWeb(part, true) : part)).join("<br/>");
-  }
-  return result;
-}
-
-function parse2(elem, parts) {
-  let result = parts;
-  console.log(parts);
-  if (parts.length == 1) {
-    if (typeof parts[0] === "object") {
-      elem.append(jp(parts[0]));
-    } else {
-      elem.html(parts[0]);
-    }
-  } else {
-    parts.map((part) => {
-      if (typeof part === "object") {
-        elem.append(jp(part));
+    args.map((arg) => {
+      if (typeof arg === "object") {
+        elem.append(renderjson(arg));
       } else {
-        elem.append($("<div>").html(part));
+        elem.append($("<div>").html(arg));
       }
     });
   }
-  return result;
 }
 
-function jp(args) {
+// renderjson
+function renderjson(args) {
   console.log(args);
-  //if (Object.keys(args).length != 0) {
   return $("<div>", { class: ".json" }).append(renderjson(args));
-  //}
 }
 
 /**
  *  Create log entries
  */
-
 function renderLogEntry(log) {
   const style = logStatus[log.kind];
   $("#log").prepend(elemRow(log, style));
@@ -137,53 +118,11 @@ function elemContent(log) {
   const div = $("<div>", { class: "w-full" });
   const elem = $("<div>", { class: "font-mono text-xs text-gray-600 w-full break-all" });
   elem.addClass(logStatus[log.kind].bg_color);
-
-  //elem.html(parse(log.args));
-
-  parse2(elem, log.args);
-
+  parseArgs(elem, log.args);
   const delta = $("<div>", { class: "float-right text-yellow-200 text-xs mr-5 z-40" });
   delta.html(`${log.delta}ms`);
   div.append(delta, elem);
   return div;
-}
-
-function highlightWeb(json, noCompatible) {
-  if (typeof json != "string") {
-    json = JSON.stringify(json, undefined, 2);
-  }
-  // syntax on web is more clear with this replacements
-  noCompatible = noCompatible || false;
-
-  // output json will be incompantible
-  if (noCompatible) {
-    json = json
-      .replace(/(?:\\\\[rn])+/g, "\n") // pretty cr
-      .replace(/\\n/g, "\n") // \n by <br/>
-      .replace(/\\"/g, "'"); // change \" by '
-  }
-
-  // Hat tip to PumBaa80 http://stackoverflow.com/questions/4810841/json-pretty-print-using-javascript
-  json = json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-  return json.replace(
-    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-    function (match) {
-      var cls = "number";
-      if (/^"/.test(match)) {
-        if (/:$/.test(match)) {
-          cls = "key";
-        } else {
-          cls = "string";
-        }
-      } else if (/true|false/.test(match)) {
-        cls = "boolean";
-      } else if (/null/.test(match)) {
-        cls = "null";
-      }
-      return "<span class='" + cls + "'>" + match + "</span>";
-    }
-  );
 }
 
 /**

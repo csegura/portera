@@ -12,7 +12,10 @@
     "express-session": "^1.17.1",
     "socket.io": "^2.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^7.0.0",
+    "eslint-config-google": "^0.14.0"
+  },
   "scripts": {
     "start": "node ./bin/app.js",
     "dev": "nodemon ./bin/app.js",
