@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" />
+    <title>*p_o_r_t_e_r_a</title>
+  </head>
+
+  <body class="bg-gray-900 flex justify-center mb-32">
+    <div class="text-white lg:container bg-transparent">
+      <div class="flex fixed right-0 z-100 h-6 pr-10">
+        <button id="clearScreen" class="hover:bg-gray-400 py-0 px-2 text-xs">
+          clear
+        </button>
+        <button id="clearData" class="hover:bg-gray-400 py-0 px-2 text-xs">
+          clear session
+        </button>
+      </div>
+      
+      <canvas id="chart" class="w-screen h-screen"></canvas>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2.2.0/dist/socket.io.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="./performance.js"></script>
+</html>
