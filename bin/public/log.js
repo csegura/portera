@@ -13,6 +13,11 @@ socket.on("log", (message) => {
   saveLog(message);
 });
 
+// renderjson
+var level = getUrlParameter("l") || 3;
+renderjson.set_icons("+", "-");
+renderjson.set_show_to_level(level);
+
 // https://unicode-table.com/es/#miscellaneous-symbols
 const logStatus = {
   log: {
@@ -77,10 +82,6 @@ function parseArgs(elem, args) {
   }
 }
 
-// renderjson
-renderjson.set_icons("+", "-");
-renderjson.set_show_to_level(1);
-
 function _renderjson(args) {
   return $("<div>", { class: ".json" }).append(renderjson(args));
 }
@@ -143,6 +144,9 @@ function saveLog(log) {
   localStorage.setItem("allLogs", JSON.stringify(allLogs));
 }
 
+/**
+ * Start
+ */
 $(document).ready(() => {
   allLogs = JSON.parse(localStorage.getItem("allLogs") || "[]");
   console.log(allLogs);
@@ -162,3 +166,13 @@ $(document).ready(() => {
     });
   });
 });
+
+/**
+ *  Parameters
+ */
+function getUrlParameter(name) {
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+  var results = regex.exec(location.search);
+  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
