@@ -78,8 +78,9 @@ Use `-s` or `--silent` for silent mode, no console logs.
 Sample Console in awe mode by default:
 ![Sample Console Image](/docs/portera_console_awe.png)
 
-Sample Console in normal mode by default:
+Sample Console in normal mode:
 ![Sample Console Image](/docs/portera_console_normal.png)
+
 
 #### Motivation
 
