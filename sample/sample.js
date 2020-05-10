@@ -1,6 +1,9 @@
 const portera = require("../lib/portera");
 
-portera("http://localhost:3001", console);
+portera({
+  host: "http://localhost:3001", 
+  obj: console
+});
 
 const o = {
   a: "test",
