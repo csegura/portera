@@ -100,18 +100,22 @@ function logConsole(message) {
   const fmtTime = chalk.magenta(new Date(message.time).toTimeString().substring(0, 8));
   const fmtKind = color(`[${message.kind.padStart(5)}]`);
 
-  let parts = message.args.map((part) => {
+  let parts = message.args.map((part,i) => {
     if (typeof part === "object") {
       if (options.mode === "awe") {
         part = highlightConsole(part, true);
       } else if (options.mode === "normal") {
         part = highlightConsole(part, false);
       } else {
-        part = part.join("\n");
+        part = part;
       }
     }
+    part = i>0 ? "\n\t\t " + part.toString().replace(/(\n\r?)/g, "\n\t\t ") : part;
     return part;
   });
-
-  console.log(`${fmtTime} ${fmtKind}`, ...parts);
+  
+  if( parts.length === 1 && typeof parts[0] === "string" ) {
+    parts[0] = parts[0].replace(/\n/g,"\n\t\t ");
+  }
+  console.log(`${fmtTime} ${fmtKind}`,...parts);
 }
