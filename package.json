@@ -1,6 +1,6 @@
 {
   "name": "portera",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Awesome remote logs for node. Portera always listen!!",
   "main": "./lib/portera.js",
   "bin": {
@@ -10,7 +10,8 @@
     "chalk": "^4.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "stdio": "^2.1.1"
   },
   "devDependencies": {
     "eslint": "^7.0.0",
@@ -21,6 +22,21 @@
     "dev": "nodemon ./bin/app.js",
     "debug": "nodemon --inspect ./bin/app.js"
   },
-  "author": "romheat@gmail.com",
-  "license": "MIT"
+  "author": "Carlos Segura <romheat@gmail.com> (https://github.com/csegura)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csegura/portera.git"
+  },
+  "keywords": [
+    "logs",
+    "node",
+    "remote",
+    "console",
+    "alternative"
+  ],
+  "bugs": {
+    "url": "https://github.com/csegura/portera/issues"
+  },
+  "homepage": "https://csegura.github.io/portera/"
 }
