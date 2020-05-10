@@ -14,7 +14,7 @@ $ npm install portera --save-dev`
 
 ##### Portera server
 
-**portera** is a client/server program runs on port 3001 by default, you can change this using environment variable PORTERA_PORT. To execute the server exec **npx portera** command, once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
+**portera** is a client/server program runs on port 3001 by default, you can change this using arguments when execute portera see below. To execute the server exec **npx portera** command, once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
 
 ```sh
 $ npx portera
@@ -42,9 +42,20 @@ const portera = require("portera");
 portera("http://localhost:3001", console);
 ```
 
+Also you can maintain your current console and create a new object
+
+```js
+const portera = require("portera");
+const debug = {}
+portera("http://localhost:3001", debug);
+
+debug.log(...)
+debug.info(...)
+```
+
 #### Portera commands
 
-Will have the same behaviour than original ones
+Will have the same behaviour than original ones if you replces console. List of methods
 
 ```js
 portera.log(...)
@@ -65,7 +76,10 @@ Use `-m` or `--mode` to specify two dirent forms of dispaly data in console `-m 
 Use `-s` or `--silent` for silent mode, no console logs.
 
 Sample Console in awe mode by default:
-![Sample Console Image](/docs/portera_console.png)
+![Sample Console Image](/docs/portera_console_awe.png)
+
+Sample Console in normal mode by default:
+![Sample Console Image](/docs/portera_console_normal.png)
 
 #### Motivation
 
@@ -75,6 +89,11 @@ This part is more or less completed and I added a GraphQL interface to learn abo
 #### Related Efforts
 
 - [renderjson](https://github.com/caldwell/renderjson) - thanks to David Caldwell <david@porkrind.org> by the great renderjeson plugin that portera use.
+
+#### TODO
+
+- [ ] Configuration object in portera
+- [ ] Add custom renderers & themes
 
 #### Maintainers
 
