@@ -1,20 +1,20 @@
 const socket = io();
 
 //get all of our elements
-let allLogs = [];
+let logData = [];
 let lastTime = Date.now();
 
 // On log received
-socket.on("log", (message) => {
-  const logTime = message.time;
-  message.delta = logTime - lastTime;
+socket.on("log", (msg) => {
+  const logTime = msg.time;
+  msg.delta = logTime - lastTime;
   lastTime = logTime;
-  renderLogEntry(message);
-  saveLog(message);
+  render(msg);
+  save(msg);
 });
 
 // renderjson
-var level = getUrlParameter("l") || 3;
+var level = getUrlParameter("l") || 4;
 renderjson.set_icons("+", "-");
 renderjson.set_show_to_level(level);
 
@@ -89,9 +89,9 @@ function _renderjson(args) {
 /**
  *  Create log entries
  */
-function renderLogEntry(log) {
-  const style = logStatus[log.kind];
-  $("#log").prepend(elemRow(log, style));
+function render(msg) {
+  const style = logStatus[msg.kind];
+  $("#log").prepend(elemRow(msg, style));
 }
 
 function elemRow(log) {
@@ -133,25 +133,24 @@ $("#clearScreen").click(() => {
 });
 
 $("#clearAllLogs").click(() => {
-  localStorage.setItem("allLogs", []);
+  localStorage.setItem("logData", []);
 });
 
 /**
  * Session
  */
-function saveLog(log) {
-  allLogs.push(log);
-  localStorage.setItem("allLogs", JSON.stringify(allLogs));
+function save(msg) {
+  logData.push(msg);
+  localStorage.setItem("logData", JSON.stringify(logData));
 }
 
 /**
  * Start
  */
 $(document).ready(() => {
-  allLogs = JSON.parse(localStorage.getItem("allLogs") || "[]");
-  console.log(allLogs);
-  if (allLogs) {
-    allLogs.forEach((e) => renderLogEntry(e));
+  logData = JSON.parse(localStorage.getItem("logData") || "[]");
+  if (logData) {
+    logData.forEach((e) => render(e));
   }
 
   // UI
