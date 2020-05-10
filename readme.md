@@ -4,7 +4,7 @@
 
 awesome remote logs for node
 
-##### Installation
+## Installation
 
 Install **portera** in your dev environment
 
@@ -12,7 +12,7 @@ Install **portera** in your dev environment
 $ npm install portera --save-dev`
 ```
 
-##### Portera server
+## Portera server
 
 **portera** is a client/server program runs on port 3001 by default, you can change this using arguments when execute portera see below. To execute the server exec **npx portera** command, once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
 
@@ -30,7 +30,7 @@ By default **portera** show json at level 3, you can change this passin the para
 
 _ms_ are time between calls in your program, the time is toke prior to emit the event
 
-##### Use portera in your code
+## Use portera in your code
 
 To redirect your output to portera you need import portera module
 
@@ -53,7 +53,7 @@ debug.log(...)
 debug.info(...)
 ```
 
-#### Portera commands
+### Portera commands
 
 Will have the same behaviour than original ones if you replces console. List of methods
 
@@ -67,7 +67,7 @@ portera.assert(...)
 portera.stack()
 ```
 
-#### Portera server - command line arguments
+### Portera server - command line arguments
 
 **portera** server can be launched with command line arguments. These arguments can either be used from the command line directly
 
@@ -82,28 +82,33 @@ Sample Console in normal mode:
 ![Sample Console Image](/docs/portera_console_normal.png)
 
 
-#### Motivation
+### Motivation
 
-These days I spent more time at home by cv quarantine, this brought me to practice new things. I began to do a sample project for the company where I work because it was something that I have in mind for some time ago. The project its a middleware between our different management software and third part applications, this middleware should contain all bussiness logic necesary by thrird part systems.
+These days I spent more time at home by corona quarantine, this brought me to practice new things. I began to do a sample project in node for the company where I work because it was something that I have had in mind for time ago. The project its a middleware between our different management programs and third part applications, this middleware should contain all bussiness logic necesary by thrird part systems.
 This part is more or less completed and I added a GraphQL interface to learn about it and how it can help us, after this I have a lot of api queries and results from my program and I needed check. Then problem was that I had only my laptop and between the code editor and web interface I didn´t have enaugh screen to show everything. Then I thought that I could use my tablet as a remote log viewer, and here is the result !!!
 
-#### Related Efforts
+### Note
 
-- [renderjson](https://github.com/caldwell/renderjson) - thanks to David Caldwell <david@porkrind.org> by the great renderjeson plugin that portera use.
+As always there are a lot of things todo (see below) this was a hobby for this days, but if you want to do portera better no doubt in contact with me. 
 
-#### TODO
+### Related Efforts
+
+- [renderjson](https://github.com/caldwell/renderjson) - thanks to David Caldwell <david@porkrind.org> by the great renderjeson plugin, used in portera webpage.
+
+### TODO
 
 - [ ] Configuration object in portera
 - [ ] Add custom renderers & themes
+- [ ] Tests
 
-#### Maintainers
+### Maintainers
 
 [@csegura](https://github.com/csegura).
 
-#### Contributing
+### Contributing
 
 Feel free to dive in! [Open an issue](https://github.com/csegura/portera/issues/new) or submit PRs.
 
-#### License
+### License
 
 [MIT](LICENSE) © carlos segura
