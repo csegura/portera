@@ -8,26 +8,39 @@ const socketio = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+
 const chalk = require("chalk");
+var stdio = require("stdio");
 
 const publicDirectoryPath = path.join(__dirname, "./public");
 
-const port = process.env.PORTERA_PORT || 3001;
-const consoleMode = process.env.PORTERA || "AWESOME";
+var options = stdio.getopt({
+  port: { key: "p", description: "port number", args: 1, default: "3001" },
+  mode: { key: "m", description: "console mode (awe or normal)", args: 1, default: "awe" },
+  silent: { key: "s", description: "silent mode, no console logs" },
+});
+
+// server
 
 app.use(express.static(publicDirectoryPath));
 
 io.on("connection", (socket) => {
   socket.on("log", (message) => {
     io.emit("log", message);
-    logConsole(message);
+    if (!options.silent) {
+      logConsole(message);
+    }
   });
 });
 
-server.listen(port, "0.0.0.0", () => {
-  console.log(chalk.yellow("p_o_r_t_e_r_a"), "server is running on port", chalk.green(port));
-  console.log("Output", chalk.cyan(consoleMode));
-  console.log("Watting for logs");
+server.listen(options.port, "0.0.0.0", () => {
+  console.log(chalk.yellow("p_o_r_t_e_r_a"), "server is running on port", chalk.green(options.port));
+  if (options.silent) {
+    console.log("Silent mode shhhh....");
+  } else {
+    console.log("Output", chalk.cyan(options.mode));
+    console.log("Watting for logs");
+  }
 });
 
 function logConsole(message) {
@@ -54,7 +67,6 @@ function logConsole(message) {
       json = JSON.stringify(json, undefined, 2);
     }
     // syntax on web is more clear with this replacements
-    noCompatible = noCompatible || false;
     if (noCompatible) {
       json = json
         .replace(/(?:\\\\[rn])+/g, "\n") // pretty cr
@@ -90,9 +102,9 @@ function logConsole(message) {
 
   let parts = message.args.map((part) => {
     if (typeof part === "object") {
-      if (consoleMode === "AWESOME") {
+      if (options.mode === "awe") {
         part = highlightConsole(part, true);
-      } else if (consoleMode === "NORMAL") {
+      } else if (options.mode === "normal") {
         part = highlightConsole(part, false);
       } else {
         part = part.join("\n");
