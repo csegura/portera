@@ -2,7 +2,7 @@
 
 # Portera
 
-awesome remote logs for node
+awesome remote logs for node and some performance data
 
 ## Installation
 
@@ -14,32 +14,38 @@ $ npm install portera --save-dev`
 
 ## Portera server
 
-**portera** is a client/server program runs on port 3001 by default, you can change this using arguments when execute portera see below. To execute the server exec **npx portera** command, once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
+**portera** is a client/server program runs on port 3001 by default, you can change this using an argumen when execute portera, see below. To execute the server exec **npx portera** command, once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
 
 ```sh
 $ npx portera
 ```
 
-you will see your logs in server console
+you will see your logs in web server console
 
-![Sample Web](/docs/portera_video.gif)
+![Sample Web](/docs/portera_web.gif)
 
 **portera sessions** are stored on local machine storage you can delete this using "clear session" button on top.
 
-By default **portera** show json at level 3, you can change this passin the parameter `?l=` to the web client. Experiment with other `?l=0` or `?l=5`
+By default **portera** show json at level 3, you can change this using an argument in the url with the parameter `?l=`. Experiment with others like `?l=0` or `?l=5`
 
-_ms_ are time between calls in your program, the time is toke prior to emit the event
+`http://localhost:3001/?l=2`
 
-## Use portera in your code
+_ms_ displayed on log page are time between calls in your program, the time is taken prior to emit the event
 
-To redirect your output to portera you need import portera module
+## Use
+
+To redirect your output to portera you need import portera module in your project
 
 ```js
 const portera = require("portera");
 
 // console outputs will be send by portera
 // use your own ip:port
-portera("http://localhost:3001", console);
+portera({
+  host: "http://localhost:3001",
+  obj: console,
+  performance: 0,
+});
 ```
 
 Also you can maintain your current console and create a new object
@@ -47,15 +53,43 @@ Also you can maintain your current console and create a new object
 ```js
 const portera = require("portera");
 const debug = {}
-portera("http://localhost:3001", debug);
+portera({
+  host: "http://localhost:3001",
+  obj: debug,
+  performance: 0});
 
 debug.log(...)
 debug.info(...)
 ```
 
-### Portera commands
+## Portera configuration
 
-Will have the same behaviour than original ones if you replces console. List of methods
+`host` where portera server is running by default if not specified http://localhost:3001
+`obj` the object to use by default console
+`performance` time in ms to obtain data performance by default 0 that is disabled
+
+## Portera performance analytics
+
+I added it to get some analytics data that node offers. To reach performance data add `/performance` to your server url
+
+`http://localhost:3001/performance´
+
+![Sample Performance](/docs/portera_performance.gif)
+
+Data is collected following the time specified in ms using `performance` parameter when portera is initialized. It is by default disabled 0. I recommend values beginning from 1000 (1s)
+
+`event.loop` the even loop lag in ms
+`cpu.user` cpu user time in ms
+`cpu.system` cpu user time in ms
+
+`heap` memory used by the heap in megabytes
+`heap.total` memory available in the heap in megabytes
+
+Sure that there are great tools to measure performance for node applications, it is only a little toy because was easy add this to portera. Please check `lib/portera.js` performance function and `bin/public/performance/performance.js` to check how this data is collected and presented. Feel free to comment anything.
+
+### Portera methods
+
+Will have the same behaviour than original ones if you replaces console. List of methods
 
 ```js
 portera.log(...)
@@ -76,20 +110,17 @@ Use `-m` or `--mode` to specify two dirent forms of dispaly data in console `-m 
 Use `-s` or `--silent` for silent mode, no console logs.
 
 Sample Console in awe mode by default:
-![Sample Console Image](/docs/portera_console_awe.png)
-
-Sample Console in normal mode:
-![Sample Console Image](/docs/portera_console_normal.png)
-
+![Sample Console Image](/docs/portera_console.gif)
 
 ### Motivation
 
-These days I spent more time at home by corona quarantine, this brought me to practice new things. I began to do a sample project in node for the company where I work because it was something that I have had in mind for time ago. The project its a middleware between our different management programs and third part applications, this middleware should contain all bussiness logic necesary by thrird part systems.
-This part is more or less completed and I added a GraphQL interface to learn about it and how it can help us, after this I have a lot of api queries and results from my program and I needed check. Then problem was that I had only my laptop and between the code editor and web interface I didn´t have enaugh screen to show everything. Then I thought that I could use my tablet as a remote log viewer, and here is the result !!!
+These days I spent more time at home by corona quarantine, this brought me to practice and learn new things. I began to do a sample project in node for the company where I work, it was something that I have had in mind for time ago. The project its a middleware between our different management programs and third part applications, this middleware should contain all bussiness logic necesary by thrird part systems.
+I have this part is more or less completed and I was adding a GraphQL interface to learn about it and how it can help us, after this I had a lot of api queries and results from my program and I needed inspect then, how queries were formed and check the results to understand your formats.
+Then I had another problem, it was that I had only my laptop and between the code editor and web interface I didn´t have enaugh screen to show everything. Then I thought that I could use my tablet as a remote log viewer, and here is the result !!!
 
 ### Note
 
-As always there are a lot of things todo (see below) this was a hobby for this days, but if you want to do portera better no doubt in contact with me. 
+As always there are a lot of things todo this was a hobby for this days, but if you want to do portera better no doubt in contact with me.
 
 ### Related Efforts
 
@@ -97,7 +128,6 @@ As always there are a lot of things todo (see below) this was a hobby for this d
 
 ### TODO
 
-- [ ] Configuration object in portera
 - [ ] Add custom renderers & themes
 - [ ] Tests
 

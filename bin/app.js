@@ -12,7 +12,7 @@ const io = socketio(server);
 const chalk = require("chalk");
 var stdio = require("stdio");
 
-const publicDirectoryPath = path.join(__dirname, "./public");
+const public_web = path.join(__dirname, "./public");
 
 var options = stdio.getopt({
   port: { key: "p", description: "port number", args: 1, default: "3001" },
@@ -22,14 +22,17 @@ var options = stdio.getopt({
 
 // server
 
-app.use(express.static(publicDirectoryPath));
+app.use(express.static(public_web));
 
 io.on("connection", (socket) => {
-  socket.on("log", (message) => {
-    io.emit("log", message);
+  socket.on("log", (msg) => {
+    io.emit("log", msg);
     if (!options.silent) {
-      logConsole(message);
+      serverLog(msg);
     }
+  });
+  socket.on("perf", (msg) => {
+    io.emit("perf", msg);
   });
 });
 
@@ -43,7 +46,7 @@ server.listen(options.port, "0.0.0.0", () => {
   }
 });
 
-function logConsole(message) {
+function serverLog(msg) {
   const logTheme = {
     log: chalk.gray,
     info: chalk.white,
@@ -54,15 +57,15 @@ function logConsole(message) {
     stack: chalk.green,
   };
 
-  const highlightTheme = {
+  const jsonTheme = {
     string: "#2a9292",
-    number: "#aa573c",
-    boolean: "#b22222",
-    null: "#955ae7",
-    key: "#8b8792",
+    number: "#00ffff",
+    boolean: "#dda0dd",
+    null: "#fafad2",
+    key: "#add8e6",
   };
 
-  const highlightConsole = (json, noCompatible) => {
+  const highlight = (json, noCompatible) => {
     if (typeof json != "string") {
       json = JSON.stringify(json, undefined, 2);
     }
@@ -78,44 +81,43 @@ function logConsole(message) {
     return json.replace(
       /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
       function (match) {
-        var cls = highlightTheme.number;
+        var cls = jsonTheme.number;
         if (/^"/.test(match)) {
           if (/:$/.test(match)) {
-            cls = highlightTheme.key;
+            cls = jsonTheme.key;
           } else {
-            cls = highlightTheme.string;
+            cls = jsonTheme.string;
           }
         } else if (/true|false/.test(match)) {
-          cls = highlightTheme.boolean;
+          cls = jsonTheme.boolean;
         } else if (/null/.test(match)) {
-          cls = highlightTheme.null;
+          cls = jsonTheme.null;
         }
         return chalk.hex(cls)(match);
       }
     );
   };
 
-  const color = logTheme[message.kind] || chalk.red;
+  const color = logTheme[msg.kind] || chalk.red;
+  const fmtTime = chalk.magentaBright(new Date(msg.time).toTimeString().substring(0, 8));
+  const fmtKind = color(`[${msg.kind.padStart(5)}]`);
 
-  const fmtTime = chalk.magenta(new Date(message.time).toTimeString().substring(0, 8));
-  const fmtKind = color(`[${message.kind.padStart(5)}]`);
-
-  let parts = message.args.map((part,i) => {
+  let parts = msg.args.map((part, i) => {
     if (typeof part === "object") {
       if (options.mode === "awe") {
-        part = highlightConsole(part, true);
+        part = highlight(part, true);
       } else if (options.mode === "normal") {
-        part = highlightConsole(part, false);
+        part = highlight(part, false);
       } else {
         part = part;
       }
     }
-    part = i>0 ? "\n\t\t " + part.toString().replace(/(\n\r?)/g, "\n\t\t ") : part;
+    part = i > 0 ? "\n\t\t " + part.toString().replace(/(\n\r?)/g, "\n\t\t ") : part;
     return part;
   });
-  
-  if( parts.length === 1 && typeof parts[0] === "string" ) {
-    parts[0] = parts[0].replace(/\n/g,"\n\t\t ");
+
+  if (parts.length === 1 && typeof parts[0] === "string") {
+    parts[0] = parts[0].replace(/\n/g, "\n\t\t ");
   }
-  console.log(`${fmtTime} ${fmtKind}`,...parts);
+  console.log(`${fmtTime} ${fmtKind}`, ...parts);
 }

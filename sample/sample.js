@@ -1,6 +1,9 @@
 const portera = require("../lib/portera");
 
-portera("http://localhost:3001", console);
+portera({
+  host: "http://localhost:3001",
+  obj: console,
+});
 
 const o = {
   a: "test",
@@ -163,14 +166,15 @@ setTimeout(() => {
 }, 2000);
 
 setTimeout(() => {
-  console.trace("Inside timeOut");
+  console.trace("Inside setTimeout");
   console.log("uno", "dos", "tres");
   console.log("uno", "dos", o);
   console.error(null);
   console.error("test");
+  console.trace();
 }, 4000);
 
-console.log("uno", "dos", "tres");
+console.log("uno", other[0].topping, "tres");
 console.log("uno", "dos", o);
 console.error(null);
 console.error("test");
