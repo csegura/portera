@@ -14,7 +14,7 @@ $ npm install portera --save-dev`
 
 ## Portera server
 
-**portera** is a client/server program runs on port 3001 by default, you can change this using an argumen when execute portera, see below. To execute the server exec **npx portera** command, once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
+**portera** is a client/server program runs on port 3001 by default, you can change this using an argument when execute portera, see below. To execute the server exec **npx portera** command, once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
 
 ```sh
 $ npx portera
@@ -24,17 +24,17 @@ you will see your logs in web server console
 
 ![Sample Web](/docs/portera_web.gif)
 
-**portera sessions** are stored on local machine storage you can delete this using "clear session" button on top.
+**portera sessions** are stored in the browser in your local machine storage you can delete this using "clear session" button on top, meanwhile you can clear your screen using "clear" button, but session will be alive.
 
-By default **portera** show json at level 3, you can change this using an argument in the url with the parameter `?l=`. Experiment with others like `?l=0` or `?l=5`
+By default **portera** show json at level 3, you can change this using an argument in the url with the parameter `?l=`. Try others like `?l=0` or `?l=5`
 
 `http://localhost:3001/?l=2`
 
-_ms_ displayed on log page are time between calls in your program, the time is taken prior to emit the event
+_ms_ displayed on the right of the log page are time made between calls in your source program, the time is taken before to emit the event
 
 ## Use
 
-To redirect your output to portera you need import portera module in your project
+To redirect your output to **portera** you need import portera module in your project
 
 ```js
 const portera = require("portera");
@@ -48,7 +48,7 @@ portera({
 });
 ```
 
-Also you can maintain your current console and create a new object
+Also you can maintain your current console object intact and create/use a new one
 
 ```js
 const portera = require("portera");
@@ -125,6 +125,7 @@ As always there are a lot of things todo this was a hobby for this days, but if 
 ### Related Efforts
 
 - [renderjson](https://github.com/caldwell/renderjson) - thanks to David Caldwell <david@porkrind.org> by the great renderjeson plugin, used in portera webpage.
+- [chartjs](https://github.com/chartjs/Chart.js) - thanks to all chart.js team.
 
 ### TODO
 
