@@ -20,9 +20,9 @@ $ npm install portera --save-dev`
 $ npx portera
 ```
 
-you will see your logs in server console
+you will see your logs in web server console
 
-![Sample Web](/docs/portera_video.gif)
+![Sample Web](/docs/portera_web.gif)
 
 **portera sessions** are stored on local machine storage you can delete this using "clear session" button on top.
 
@@ -74,6 +74,8 @@ I added it to get some analytics data that node offers. To reach performance dat
 
 `http://localhost:3001/performance´
 
+![Sample Performance](/docs/portera_performance.gif)
+
 Data is collected following the time specified in ms using `performance` parameter when portera is initialized. It is by default disabled 0. I recommend values beginning from 1000 (1s)
 
 `event.loop` the even loop lag in ms
@@ -108,10 +110,7 @@ Use `-m` or `--mode` to specify two dirent forms of dispaly data in console `-m 
 Use `-s` or `--silent` for silent mode, no console logs.
 
 Sample Console in awe mode by default:
-![Sample Console Image](/docs/portera_console_awe.png)
-
-Sample Console in normal mode:
-![Sample Console Image](/docs/portera_console_normal.png)
+![Sample Console Image](/docs/portera_console.gif)
 
 ### Motivation
 
