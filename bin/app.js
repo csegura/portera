@@ -47,7 +47,6 @@ server.listen(options.port, "0.0.0.0", () => {
 });
 
 function serverLog(msg) {
-  
   const logTheme = {
     log: chalk.gray,
     info: chalk.white,
@@ -60,10 +59,10 @@ function serverLog(msg) {
 
   const jsonTheme = {
     string: "#2a9292",
-    number: "#aa573c",
-    boolean: "#b22222",
-    null: "#955ae7",
-    key: "#8b8792",
+    number: "#00ffff",
+    boolean: "#dda0dd",
+    null: "#fafad2",
+    key: "#add8e6",
   };
 
   const highlight = (json, noCompatible) => {
@@ -100,10 +99,10 @@ function serverLog(msg) {
   };
 
   const color = logTheme[msg.kind] || chalk.red;
-  const fmtTime = chalk.magenta(new Date(msg.time).toTimeString().substring(0, 8));
+  const fmtTime = chalk.magentaBright(new Date(msg.time).toTimeString().substring(0, 8));
   const fmtKind = color(`[${msg.kind.padStart(5)}]`);
 
-  let parts = msg.args.map((part,i) => {
+  let parts = msg.args.map((part, i) => {
     if (typeof part === "object") {
       if (options.mode === "awe") {
         part = highlight(part, true);
@@ -113,12 +112,12 @@ function serverLog(msg) {
         part = part;
       }
     }
-    part = i>0 ? "\n\t\t " + part.toString().replace(/(\n\r?)/g, "\n\t\t ") : part;
+    part = i > 0 ? "\n\t\t " + part.toString().replace(/(\n\r?)/g, "\n\t\t ") : part;
     return part;
   });
-  
-  if( parts.length === 1 && typeof parts[0] === "string" ) {
-    parts[0] = parts[0].replace(/\n/g,"\n\t\t ");
+
+  if (parts.length === 1 && typeof parts[0] === "string") {
+    parts[0] = parts[0].replace(/\n/g, "\n\t\t ");
   }
-  console.log(`${fmtTime} ${fmtKind}`,...parts);
+  console.log(`${fmtTime} ${fmtKind}`, ...parts);
 }
