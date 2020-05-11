@@ -64,9 +64,9 @@ debug.info(...)
 
 ## Portera configuration
 
-`host` where portera server is running by default if not specified http://localhost:3001
-`obj` the object to use by default console
-`performance` time in ms to obtain data performance by default 0 that is disabled
+- `host` where portera server is running by default if not specified http://localhost:3001
+- `obj` the object to use by default console
+- `performance` time in ms to obtain data performance by default 0 that is disabled
 
 ## Portera performance analytics
 
