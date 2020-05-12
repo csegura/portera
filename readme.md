@@ -12,13 +12,13 @@
 
 Install **portera** in your dev environment
 
-```
+```sh
 $ npm install portera --save-dev`
 ```
 
 ## Use
 
-To redirect your output to **portera** server you need import portera module in your project
+To redirect your output to **portera** server import portera module in your project
 
 ```js
 const portera = require("portera");
@@ -43,7 +43,7 @@ portera({
 });
 ```
 
-Also you can maintain your current console object intact and create/use a new one
+Also you can keep your current console object and create/use a new one
 
 ```js
 const portera = require("portera");
@@ -60,12 +60,12 @@ debug.info(...)
 ## Portera configuration
 
 - `host` where portera server is running by default if not specified http://localhost:3001
-- `obj` the object to use by default console
+- `obj` the object to use by default `console`
 - `performance` time in ms to obtain data performance by default 0 that is disabled
 
 ## Portera server
 
-**portera** sererver runs on port 3001 by default, you can change this using an argument when execute portera, see below. once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
+**portera** server runs on port 3001 by default, you can change this using an argument when execute portera, see below. Once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
 
 Run portera server
 
@@ -73,17 +73,17 @@ Run portera server
 $ npx portera
 ```
 
-Once running you will see your otputs in the server console. To use web client yo can open your favorite browser using the portera address `http://<portera_server_ip>:3001`
+Once running you will see portera otput both in the server console and in the web client. To use web client you can open your favorite browser using the portera address `http://<portera_server_ip>:3001`
 
 ## Portera web client
 
-By default **portera** show json at level 3, you can change this using an argument in the url with the parameter `?l=`. Try others like `?l=0` or `?l=5`
+By default **portera** show three levels of json, you can change this using an argument in the url with the parameter `?l=`. Try others like `?l=0` or `?l=5`
 
 > `http://localhost:3001/?l=2`
 
 _ms_ displayed on the right of the log page are time made between calls in your source program, the time is taken before to emit the event
 
-**portera sessions** are stored in the browser in your local machine storage you can delete this using "clear session" button on top, meanwhile you can clear your screen using "clear" button, but session will be alive.
+Current data session are stored in the browser using your local machine storage you can delete this using "clear session" button on top, meanwhile you can clear your screen using "clear" button, but the data will be there next time you reload the page.
 
 ## Portera performance analytics
 
@@ -93,16 +93,16 @@ I added it to show analytics data that node offers. To reach performance data ad
 
 ![Sample Performance](/docs/portera_performance.gif)
 
-Data is collected following the time specified in ms using `performance` parameter when portera is initialized. It is by default disabled 0. I recommend values beginning from 1000 (1s)
+Data is collected each time specified in the `performance` parameter when portera is initialized. Time should be expressd in ms. It is by default disabled 0. I recommend values beginning from 1000 (1s)
 
-`event.loop` the even loop lag in ms
-`cpu.user` cpu user time in ms
-`cpu.system` cpu user time in ms
+- `event.loop` the even loop lag in ms
+- `cpu.user` cpu user time in ms
+- `cpu.system` cpu user time in ms
 
-`heap` memory used by the heap in megabytes
-`heap.total` memory available in the heap in megabytes
+- `heap` memory used by the heap in megabytes
+- `heap.total` memory available in the heap in megabytes
 
-Sure that there are great tools to measure performance for node applications, it is only a little toy because was paying. Please check `lib/portera.js` performance function and `bin/public/performance/performance.js` to check how this data is collected and showed. Feel free to comment anything.
+I'm sure that there are great tools to measure performance for node applications, it is only a little toy because was paying again. Please check `lib/portera.js` performance function and `bin/public/performance/performance.js` to check how this data is collected and showed. Feel free to comment anything.
 
 ### Portera methods
 
@@ -115,12 +115,18 @@ portera.warn(...)
 portera.error(...)
 portera.trace(...)
 portera.assert(...)
-portera.stack()
+```
+
+New methods
+
+```js
+portera.stack() // do a function trace showing function called previously
+portera.logobg(...) // It's an experiment dumping an entire object, I'm still working on it
 ```
 
 ### Portera server - command line arguments
 
-**portera** server can be launched with command line arguments. These arguments can either be used from the command line directly
+**portera** server can be launched with command line arguments.
 
 Use `-p` or `--port` to specify a different port
 Use `-m` or `--mode` to specify two dirent forms of dispaly data in console `-m awe` by default or `-m normal`. In normal mode json will be valid json, you can copy & paste to use in another place. Awesome output is more readable otherwise json don´t have a valid format.
@@ -132,7 +138,9 @@ Sample Console in awe mode by default:
 ### Motivation
 
 These days I spent more time at home by corona quarantine, time to practice and learn new things. I began to do a sample project in node for the company where I work, it was something that I had have in my mind time ago. The project its a middleware between our different management programs and third part applications, this middleware should contain all bussiness logic necesary by thrird part systems.
+
 When I had this part finished, I was adding a GraphQL interface to learn about it. Then I had a lot of api queries and results from my program and I needed inspect then, to understand how queries were formed and verify the results.
+
 Then I had another problem, it was that I had only my laptop and it have a little screen, between the code editor and browser I didn´t have enaugh screen to show everything. Then I thought that I could use my tablet as a remote log viewer, and here is the result !!!
 
 ### Note
