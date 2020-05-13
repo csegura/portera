@@ -62,6 +62,12 @@ const logStatus = {
     bullet: "&#9654",
     bullet_color: ["text-blue-600"],
   },
+  logobj: {
+    visible: true,
+    bg_color: ["bg-transparent"],
+    bullet: "&#9679",
+    bullet_color: ["text-green-200"],
+  },
 };
 
 function parseArgs(elem, args) {
@@ -91,11 +97,21 @@ function _renderjson(args) {
  */
 function render(msg) {
   const style = logStatus[msg.kind];
-  $("#log").prepend(elemRow(msg, style));
+  var row = elemRow(msg, style);
+  $("#log").prepend(row);
+  //$("#" + msg.time)
+  $(row)
+    .get()
+    .forEach((e) => {
+      console.log(e);
+      Prism.highlightAllUnder(e);
+    });
 }
 
 function elemRow(log) {
-  const elem = $("<div></div>", { class: "flex flex-row mt-0 w-screen ml-5 bg-opacity-25 border-b-1 border-gray-100" });
+  const elem = $("<div>", {
+    class: "flex flex-row mt-0 w-screen ml-5 bg-opacity-25 border-b-1 border-gray-100",
+  });
   elem.addClass(log.kind);
   elem.append(elemInfo(log), elemContent(log));
   if (!logStatus[log.kind].visible) {
@@ -154,7 +170,7 @@ $(document).ready(() => {
   }
 
   // UI
-  ["log", "info", "warn", "trace", "error"].forEach((e) => {
+  ["log", "info", "warn", "trace", "error", "logobj"].forEach((e) => {
     const es = e + "s";
     const key = $("#toogleK" + e);
     key.click(() => {

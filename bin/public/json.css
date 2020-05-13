@@ -6,7 +6,7 @@ pre {
   word-wrap: break-word; /* IE 5+ */
 }
 
-/* json colors */
+/* json colors 
 .string {
   color: #2a9292;
 }
@@ -26,6 +26,7 @@ pre {
 .key {
   color: #8b8792;
 }
+*/
 
 .renderjson a {
   text-decoration: none;

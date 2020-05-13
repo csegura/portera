@@ -72,9 +72,11 @@ function serverLog(msg) {
     // syntax on web is more clear with this replacements
     if (noCompatible) {
       json = json
-        .replace(/(?:\\\\[rn])+/g, "\n") // pretty cr
-        .replace(/\\n/g, "\n") // \n by <br/>
-        .replace(/\\"/g, "'"); // change \" by '
+        //.replace(/(?:\\\\[rn])+/g, "\n") // pretty cr
+        .replace(/[\x09-\x0E]/gim, "\n");
+      //.replace(/[^\\\\n][\\]\n/gm, "\n"); //.replace(/[^\x20-\x7E]/gim, "")
+      //.replace(/\\n/g, "\n"); // \n by <br/>
+      // .replace(/\\"/g, "'"); // change \" by '
     }
 
     // Hat tip to PumBaa80 http://stackoverflow.com/questions/4810841/json-pretty-print-using-javascript

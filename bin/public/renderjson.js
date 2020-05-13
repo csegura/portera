@@ -106,6 +106,14 @@ var module,
       pre.append(ce);
       return pre;
     };
+    var trace = function (txt) {
+      var pre = document.createElement("pre");
+      var ce = document.createElement("code");
+      ce.className = "language-jst";
+      ce.appendChild(text(txt));
+      pre.append(ce);
+      return pre;
+    };
     var A = function A(txt, classname, callback) {
       var a = document.createElement("a");
       if (classname) a.className = classname;
@@ -148,6 +156,7 @@ var module,
           content.style.display = "inline";
           empty.style.display = "none";
         };
+
         append(
           empty,
           A(options.show, "disclosure", show),
@@ -159,6 +168,27 @@ var module,
         var el = append(span(), text(my_indent.slice(0, -1)), empty);
         if (show_level > 0 && type != "string") show();
         return el;
+      };
+
+      // cs: subrender code
+      var rendercode = (json, indent) => {
+        return disclosure("(", "code ...", ")", "code", function () {
+          var as = append(span("code"), themetext("code syntax", "(", null, ""));
+          var pad = indent.length * 2;
+          append(as, code(" ".padStart(pad) + json.substring(4).replace(/\n/g, "\n".padEnd(pad))));
+          append(as, themetext(null, indent, "code syntax", ")"));
+          return as;
+        });
+      };
+
+      var rendertrace = (json, indent) => {
+        return disclosure("(", "trace ...", ")", "code", function () {
+          var as = append(span("code"), themetext("code syntax", "(", null, ""));
+          var pad = indent.length * 2;
+          append(as, trace(" ".padStart(pad) + json.substring(4).replace(/\n/g, "\n".padEnd(pad))));
+          append(as, themetext(null, indent, "code syntax", ")"));
+          return as;
+        });
       };
 
       if (json === null) return themetext(null, my_indent, "keyword", "null");
@@ -173,13 +203,10 @@ var module,
       if (typeof json != "object" || [Number, String, Boolean, Date].indexOf(json.constructor) >= 0) {
         // cs: render code for prism
         if ([String].indexOf(json.constructor) >= 0 && json.substr(0, 4) === "[fn]") {
-          return disclosure("(", "code ...", ")", "code", function () {
-            var as = append(span("code"), themetext("code syntax", "(", null, ""));
-            var pad = indent.length * 2;
-            append(as, code(" ".padStart(pad) + json.substring(4).replace(/\n/g, "\n".padEnd(pad))));
-            append(as, themetext(null, indent, "code syntax", ")"));
-            return as;
-          });
+          return rendercode(json, indent);
+        }
+        if ([String].indexOf(json.constructor) >= 0 && json.substr(0, 4) === "[tr]") {
+          return rendertrace(json, indent);
         }
 
         // Strings, numbers and bools
