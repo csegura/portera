@@ -2,9 +2,9 @@
 
 [![Gitter](https://badges.gitter.im/porteralogs/community.svg)](https://gitter.im/porteralogs/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![GitHub version](https://badge.fury.io/gh/csegura%2Fportera.svg)](https://badge.fury.io/gh/csegura%2Fportera) [![github release version](https://img.shields.io/github/v/release/csegura/portera.svg?include_prereleases)](https://github.com/csegura/portera/releases/latest) [![npm version](https://badge.fury.io/js/portera.svg)](https://badge.fury.io/js/portera) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/csegura/portera/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 
-> Portera is a Node library which provides remote logs with an awesome style.
+> Portera is a Node library which provides remote logs with an awesome style :).
 
-**portera** has two parts, a library that wrap your console object by default, redirecting the output to **portera** server, its receive your data and serve a web page where you can display this.
+**portera** has two parts, a library that wrap your console object by default, redirecting the output to **portera** server, its receive your data and serve a web page where you can display the output.
 
 ![Sample Web](/docs/portera_web.gif)
 
@@ -51,7 +51,8 @@ const debug = {}
 portera({
   host: "http://localhost:3001",
   obj: debug,
-  performance: 0});
+  performance: 0
+});
 
 debug.log(...)
 debug.info(...)
@@ -121,7 +122,7 @@ New methods
 
 ```js
 portera.stack() // do a function trace showing function called previously
-portera.logobg(...) // It's an experiment dumping an entire object, I'm still working on it
+portera.logobj(...) // It's an experiment dumping an entire object, I'm still working on it
 ```
 
 ### Portera server - command line arguments
