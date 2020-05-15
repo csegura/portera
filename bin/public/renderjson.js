@@ -215,8 +215,8 @@ var module,
           my_indent,
           typeof json,
           JSON.stringify(json)
-          //.replace(/(?:\\\\[rn])+/g, "\n")
-          //.replace(/\\n/g, "\n")
+            //.replace(/(?:\\\\[rn])+/g, "\n")
+            .replace(/\\n\b/g, "\n")
         );
       }
 
