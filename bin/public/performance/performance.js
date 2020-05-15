@@ -23,7 +23,7 @@ function render(msg) {
   d[4].data.push({ y: bytesToMB(msg.mem.heapTotal), x: t });
   chart.update();
   if (d[0].data.length > MAX_RENDER_POINTS) {
-    d.forEach(d => d.data.shift());
+    d.forEach((d) => d.data.shift());
   }
 }
 
@@ -42,7 +42,7 @@ function bytesToMB(bytes) {
  */
 $("#clearScreen").click(() => {
   var d = chart.data.datasets;
-  d.forEach(d => d.data = []);
+  d.forEach((d) => (d.data = []));
   chart.update();
 });
 
@@ -98,7 +98,7 @@ $(document).ready(() => {
           borderWidth: 1,
           borderColor: "#2a9292",
           fill: false,
-          borderDash: [5,5],
+          borderDash: [5, 5],
           yAxisID: "y-axis-mb",
         },
         {
@@ -107,7 +107,7 @@ $(document).ready(() => {
           borderWidth: 1,
           borderColor: "#aa573c",
           fill: false,
-          borderDash: [10,5],
+          borderDash: [10, 5],
           yAxisID: "y-axis-mb",
         },
       ],
@@ -121,7 +121,7 @@ $(document).ready(() => {
       },
       title: {
         display: true,
-        text: "portera performance analytics",
+        text: "portera performance monitor",
         position: "top",
         fontSize: 16,
         padding: 20,
@@ -130,7 +130,7 @@ $(document).ready(() => {
       scales: {
         yAxes: [
           {
-            type: "linear", 
+            type: "linear",
             display: true,
             position: "left",
             id: "y-axis-ms",
@@ -138,8 +138,8 @@ $(document).ready(() => {
               fontColor: "#3e95cd",
             },
             gridLines: {
-              color: "#0e0e0e", 
-              display: true, 
+              color: "#0e0e0e",
+              display: true,
             },
             scaleLabel: {
               display: true,
@@ -148,13 +148,13 @@ $(document).ready(() => {
             },
           },
           {
-            type: "linear", 
+            type: "linear",
             display: true,
             position: "right",
             id: "y-axis-mb",
             // grid line settings
             gridLines: {
-              drawOnChartArea: false, 
+              drawOnChartArea: false,
             },
             scaleLabel: {
               display: true,
@@ -175,8 +175,8 @@ $(document).ready(() => {
               fontColor: "#3e95cd",
             },
             gridLines: {
-              color: "#0e0e0e", 
-              display: true, 
+              color: "#0e0e0e",
+              display: true,
             },
           },
         ],
