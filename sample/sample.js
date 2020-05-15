@@ -6,9 +6,11 @@ portera({
 });
 
 const o = {
-  a: "test",
-  b: "test2",
-  c: 123,
+  one: "un object",
+  two: "that",
+  num: 123.0,
+  dat: new Date(),
+  ana: ["1", 2, {}, () => {}],
 };
 
 const other = [
@@ -163,7 +165,8 @@ setTimeout(() => {
   console.warn(1, 2, 3, 4);
   console.trace("Trace");
   console.log("other", other[1]);
-}, 2000);
+  console.dump(o);
+}, 1000);
 
 setTimeout(() => {
   console.trace("Inside setTimeout");
@@ -172,7 +175,8 @@ setTimeout(() => {
   console.error(null);
   console.error("test");
   console.trace();
-}, 4000);
+  console.dump(this);
+}, 2000);
 
 console.log("uno", other[0].topping, "tres");
 console.log("uno", "dos", o);
@@ -191,8 +195,10 @@ function re_add(a, b) {
 add(1, 2);
 re_add(55, 55);
 
+err = new Error("Fatal ERROR");
+console.error("error", err);
 console.assert(1 == 2, "not the same", "1 === 2");
 console.trace("Test", "we are here");
-
+console.dump();
 console.log("exit");
-setTimeout(() => process.exit(), 10000);
+setTimeout(() => process.exit(), 5000);
