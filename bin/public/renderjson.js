@@ -130,8 +130,8 @@ var module,
 
     // cs: highlight sing prisma
     var highlightPrism = (e) => {
-      if (e && e.target.nextSibling.className.indexOf("code") >= 0) {
-        Prism.highlightAllUnder(e.target.parentNode.nextSibling);
+      if (e && e.target && e.target.nextSibling.className.indexOf("code") >= 0) {
+        if (e.target.parentNode.nextSibling) Prism.highlightAllUnder(e.target.parentNode.nextSibling);
       }
     };
 
