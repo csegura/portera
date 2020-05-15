@@ -99,7 +99,7 @@ function render(msg) {
   const style = logStatus[msg.kind];
   var row = elemRow(msg, style);
   $("#log").prepend(row);
-  //$("#" + msg.time)
+
   $(row)
     .get()
     .forEach((e) => {
@@ -156,7 +156,21 @@ $("#clearAllLogs").click(() => {
  */
 function save(msg) {
   logData.push(msg);
-  localStorage.setItem("logData", JSON.stringify(logData));
+  const json = JSON.stringify(logData);
+  if (json.length >= 5142880 && json.length < 5146880) {
+    render({
+      kind: "warn",
+      args: "localStorage is near to be full 😱 are you interested in save logs?",
+      time: Number(Date.now()),
+      delta: 0,
+    });
+  }
+  if (json.length < 524000) {
+    localStorage.setItem("logData", json);
+  } else {
+    console.warn(":-( portera has this limitation .. are you interested in save logs? tell me!! ");
+    logData = [];
+  }
 }
 
 /**
