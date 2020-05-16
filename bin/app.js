@@ -63,38 +63,28 @@ function serverLog(msg) {
     boolean: "#dda0dd",
     null: "#fafad2",
     key: "#add8e6",
+    code: "#018d12",
+    trace: "#ae81ff",
   };
 
   const highlight = (json, noCompatible) => {
     if (typeof json != "string") {
       json = JSON.stringify(json, undefined, 2);
     }
-    // syntax on web is more clear with this replacements
+
     if (noCompatible) {
       json = json
-        .replace(/(?:\\\\[rn])+/g, "\n") // pretty cr
-        .replace(/\\n/g, "\n") // \n by <br/>
-        .replace(/\\"/g, "'"); // change \" by '
+        //.replace(/(?:\\\\[rn])+/g, "\n") // pretty cr
+        .replace(/[\x09-\x0E]/gim, "\n")
+        //.replace(/[^\\\\n][\\]\n/gm, "\n"); //.replace(/[^\x20-\x7E]/gim, "")
+        .replace(/\\n\b/g, "\n"); // \n by <br/>
+      // .replace(/\\"/g, "'"); // change \" by '
     }
 
     // Hat tip to PumBaa80 http://stackoverflow.com/questions/4810841/json-pretty-print-using-javascript
     return json.replace(
       /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-      function (match) {
-        var cls = jsonTheme.number;
-        if (/^"/.test(match)) {
-          if (/:$/.test(match)) {
-            cls = jsonTheme.key;
-          } else {
-            cls = jsonTheme.string;
-          }
-        } else if (/true|false/.test(match)) {
-          cls = jsonTheme.boolean;
-        } else if (/null/.test(match)) {
-          cls = jsonTheme.null;
-        }
-        return chalk.hex(cls)(match);
-      }
+      highlightJson
     );
   };
 
@@ -120,4 +110,28 @@ function serverLog(msg) {
     parts[0] = parts[0].replace(/\n/g, "\n\t\t ");
   }
   console.log(`${fmtTime} ${fmtKind}`, ...parts);
+
+  function highlightJson(match) {
+    var cls = jsonTheme.number;
+    if (/^"/.test(match)) {
+      if (/:$/.test(match)) {
+        cls = jsonTheme.key;
+      } else {
+        cls = jsonTheme.string;
+        if (match.substr(1, 4) === "[fn]") {
+          match = match.substring(5);
+          cls = jsonTheme.code;
+        }
+        if (match.substr(1, 4) === "[tr]") {
+          match = match.substring(5);
+          cls = jsonTheme.trace;
+        }
+      }
+    } else if (/true|false/.test(match)) {
+      cls = jsonTheme.boolean;
+    } else if (/null/.test(match)) {
+      cls = jsonTheme.null;
+    }
+    return chalk.hex(cls)(match);
+  }
 }

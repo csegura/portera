@@ -98,17 +98,41 @@ var module,
       if (classname) s.className = classname;
       return s;
     };
+    var code = function (txt) {
+      var pre = document.createElement("pre");
+      var ce = document.createElement("code");
+      ce.className = "language-js";
+      ce.appendChild(text(txt));
+      pre.append(ce);
+      return pre;
+    };
+    var trace = function (txt) {
+      var pre = document.createElement("pre");
+      var ce = document.createElement("code");
+      ce.className = "language-jst";
+      ce.appendChild(text(txt));
+      pre.append(ce);
+      return pre;
+    };
     var A = function A(txt, classname, callback) {
       var a = document.createElement("a");
       if (classname) a.className = classname;
       a.appendChild(text(txt));
-      a.href = "#";
+      a.href = "#/";
       a.onclick = function (e) {
         callback();
+        highlightPrism(e);
         if (e) e.stopPropagation();
         return false;
       };
       return a;
+    };
+
+    // cs: highlight sing prisma
+    var highlightPrism = (e) => {
+      if (e && e.target && e.target.nextSibling.className.indexOf("code") >= 0) {
+        if (e.target.parentNode.nextSibling) Prism.highlightAllUnder(e.target.parentNode.nextSibling);
+      }
     };
 
     function _renderjson(json, indent, dont_indent, show_level, options) {
@@ -132,6 +156,7 @@ var module,
           content.style.display = "inline";
           empty.style.display = "none";
         };
+
         append(
           empty,
           A(options.show, "disclosure", show),
@@ -145,24 +170,55 @@ var module,
         return el;
       };
 
+      // cs: subrender code
+      var rendercode = (json, indent) => {
+        return disclosure("(", "code ...", ")", "code", function () {
+          var as = append(span("code"), themetext("code syntax", "(", null, ""));
+          var pad = indent.length * 2;
+          append(as, code(" ".padStart(pad) + json.substring(4).replace(/\n/g, "\n".padEnd(pad))));
+          append(as, themetext(null, indent, "code syntax", ")"));
+          return as;
+        });
+      };
+
+      var rendertrace = (json, indent) => {
+        return disclosure("(", "trace ...", ")", "code", function () {
+          var as = append(span("code"), themetext("code syntax", "(", null, ""));
+          var pad = indent.length * 2;
+          append(as, trace(" ".padStart(pad) + json.substring(4).replace(/\n/g, "\n".padEnd(pad))));
+          append(as, themetext(null, indent, "code syntax", ")"));
+          return as;
+        });
+      };
+
       if (json === null) return themetext(null, my_indent, "keyword", "null");
       if (json === void 0) return themetext(null, my_indent, "keyword", "undefined");
 
-      if (typeof json == "string" && json.length > options.max_string_length)
+      if (typeof json == "string" && json.length > options.max_string_length) {
         return disclosure('"', json.substr(0, options.max_string_length) + " ...", '"', "string", function () {
           return append(span("string"), themetext(null, my_indent, "string", JSON.stringify(json)));
         });
+      }
 
-      if (typeof json != "object" || [Number, String, Boolean, Date].indexOf(json.constructor) >= 0)
+      if (typeof json != "object" || [Number, String, Boolean, Date].indexOf(json.constructor) >= 0) {
+        // cs: render code for prism
+        if ([String].indexOf(json.constructor) >= 0 && json.substr(0, 4) === "[fn]") {
+          return rendercode(json, indent);
+        }
+        if ([String].indexOf(json.constructor) >= 0 && json.substr(0, 4) === "[tr]") {
+          return rendertrace(json, indent);
+        }
+
         // Strings, numbers and bools
         return themetext(
           null,
           my_indent,
           typeof json,
           JSON.stringify(json)
-            .replace(/(?:\\\\[rn])+/g, "\n")
-            .replace(/\\n/g, "\n")
+            //.replace(/(?:\\\\[rn])+/g, "\n")
+            .replace(/\\n\b/g, "\n")
         );
+      }
 
       if (json.constructor == Array) {
         if (json.length == 0) return themetext(null, my_indent, "array syntax", "[]");

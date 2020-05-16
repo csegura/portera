@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" />
     <link rel="stylesheet" href="json.css" />
+    <link rel="stylesheet" href="./assets/prism.css" />
     <title>p_o_r_t_e_r_a</title>
   </head>
 
@@ -15,33 +16,42 @@
         <button id="clearScreen" class="hover:bg-gray-400 py-0 px-2 text-xs">
           clear
         </button>
-        <button id="clearAllLogs" class="hover:bg-gray-400 py-0 px-2 text-xs">
+        <button id="clearAllLogs" class="hover:bg-gray-600 py-0 px-2 text-xs">
           clear session
         </button>
         <button id="toogleKlog" class="hover:bg-gray-400 py-0 px-2 text-xs">
-          hide logs
+          🔊 logs
         </button>
         <button id="toogleKinfo" class="hover:bg-gray-400 py-0 px-2 text-xs">
-          hide infos
+          🔊 infos
         </button>
         <button id="toogleKwarn" class="hover:bg-gray-400 py-0 px-2 text-xs">
-          hide warns
+          🔊 warns
         </button>
         <button id="toogleKtrace" class="hover:bg-gray-400 py-0 px-2 text-xs">
-          hide traces
+          🔊 traces
         </button>
         <button id="toogleKerror" class="hover:bg-gray-400 py-0 px-2 text-xs">
-          hide errors
+          🔊 errors
         </button>
-
-        <!-- <p class="float right bg-gray-900 text-white text-xs">p_o_r_t_e_r_a</p>  -->
+        <button id="toogleKdump" class="hover:bg-gray-400 py-0 px-2 text-xs">
+          🔊 dumps
+        </button>
+        <a href="#/" id="toogle">&#128035;</a>
       </div>
-      <div id="log" class=""></div>
+
+      <div id="log" class="flex-grow">
+        <div class="flex-shrink text-6xl text-center my-32">
+          p o r t e r a 🚀
+        </div>
+      </div>
     </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2.2.0/dist/socket.io.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="./renderjson.js"></script>
+  <script src="./assets/prism.js"></script>
+  <script src="./assets/jst.js" defer></script>
   <script src="./log.js"></script>
 </html>

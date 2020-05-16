@@ -23,44 +23,50 @@ const logStatus = {
   log: {
     visible: true,
     bg_color: ["bg-transparent"],
-    bullet: "&#9679",
+    bullet: "📝",
     bullet_color: ["text-green-600"],
   },
   info: {
     visible: true,
     bg_color: ["bg-indigo-900", "bg-opacity-25"],
-    bullet: "&#9679",
+    bullet: "💬",
     bullet_color: ["text-blue-600"],
   },
   warn: {
     visible: true,
     bg_color: ["bg-indigo-900", "bg-opacity-75"],
-    bullet: "&#9679",
+    bullet: "📢",
     bullet_color: ["text-orange-600"],
   },
   error: {
     visible: true,
     bg_color: ["bg-pink-900", "bg-opacity-25"],
-    bullet: "&#9679",
+    bullet: "💥",
     bullet_color: ["text-pink-600"],
   },
   trace: {
     visible: true,
     bg_color: ["bg-indigo-900", "bg-opacity-25"],
-    bullet: "&#9654",
+    bullet: "👓",
     bullet_color: ["text-teal-600"],
   },
   assert: {
     visible: true,
     bg_color: ["bg-red-900", "bg-opacity-25"],
-    bullet: "&#9654",
+    bullet: "🔥",
     bullet_color: ["text-red-600"],
   },
   stack: {
     visible: true,
     bg_color: ["bg-blue-900", "bg-opacity-25"],
-    bullet: "&#9654",
+    bullet: "🚀",
     bullet_color: ["text-blue-600"],
+  },
+  dump: {
+    visible: true,
+    bg_color: ["bg-transparent"],
+    bullet: "🔦",
+    bullet_color: ["text-green-200"],
   },
 };
 
@@ -91,11 +97,20 @@ function _renderjson(args) {
  */
 function render(msg) {
   const style = logStatus[msg.kind];
-  $("#log").prepend(elemRow(msg, style));
+  var row = elemRow(msg, style);
+  $("#log").prepend(row);
+
+  $(row)
+    .get()
+    .forEach((e) => {
+      Prism.highlightAllUnder(e);
+    });
 }
 
 function elemRow(log) {
-  const elem = $("<div></div>", { class: "flex flex-row mt-0 w-screen ml-5 bg-opacity-25 border-b-1 border-gray-100" });
+  const elem = $("<div>", {
+    class: "flex flex-row mt-0 w-screen ml-5 bg-opacity-25 border-b-1 border-gray-100",
+  });
   elem.addClass(log.kind);
   elem.append(elemInfo(log), elemContent(log));
   if (!logStatus[log.kind].visible) {
@@ -141,7 +156,21 @@ $("#clearAllLogs").click(() => {
  */
 function save(msg) {
   logData.push(msg);
-  localStorage.setItem("logData", JSON.stringify(logData));
+  const json = JSON.stringify(logData);
+  if (json.length >= 5142880 && json.length < 5146880) {
+    render({
+      kind: "warn",
+      args: "localStorage is near to be full 😱 are you interested in save logs?",
+      time: Number(Date.now()),
+      delta: 0,
+    });
+  }
+  if (json.length < 524000) {
+    localStorage.setItem("logData", json);
+  } else {
+    console.warn(":-( portera has this limitation .. are you interested in save logs? tell me!! ");
+    logData = [];
+  }
 }
 
 /**
@@ -154,15 +183,23 @@ $(document).ready(() => {
   }
 
   // UI
-  ["log", "info", "warn", "trace", "error"].forEach((e) => {
+  ["log", "info", "warn", "trace", "error", "dump"].forEach((e) => {
     const es = e + "s";
     const key = $("#toogleK" + e);
     key.click(() => {
       const elms = $("." + e);
       logStatus[e].visible = !logStatus[e].visible;
       elms.fadeToggle(800);
-      key.text(key.text() == "show " + es ? "hide " + es : "show " + es);
+      key.text(key.text() == "🔈 " + es ? "🔊 " + es : "🔈 " + es);
     });
+  });
+
+  $("#toogle").click(() => {
+    var a = $("#toogle");
+    $("span:visible > a.disclosure")
+      .get()
+      .forEach((e) => e.click(e));
+    a.text(a.text() == "🥚" ? "🐣" : "🥚");
   });
 });
 

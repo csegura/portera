@@ -1,12 +1,12 @@
-# Portera
+# portera 🚀
 
 [![Gitter](https://badges.gitter.im/porteralogs/community.svg)](https://gitter.im/porteralogs/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![GitHub version](https://badge.fury.io/gh/csegura%2Fportera.svg)](https://badge.fury.io/gh/csegura%2Fportera) [![github release version](https://img.shields.io/github/v/release/csegura/portera.svg?include_prereleases)](https://github.com/csegura/portera/releases/latest) [![npm version](https://badge.fury.io/js/portera.svg)](https://badge.fury.io/js/portera) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/csegura/portera/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 
-> Portera is a Node library which provides remote logs with an awesome style.
+> bored with console logs? **portera**🚀 provides remote logs for you node apps with an awesome style :).
 
-**portera** has two parts, a library that wrap your console object by default, redirecting the output to **portera** server, its receive your data and serve a web page where you can display this.
+**portera** has two parts, a library that wrap your console object by default, redirecting the output to **portera** server, its receive your data and serve a web page where you can display an awesome output, just like that
 
-![Sample Web](/docs/portera_web.gif)
+![Sample Web](/docs/portera_0-0-20.gif)
 
 ## Installation
 
@@ -18,7 +18,7 @@ $ npm install portera --save-dev`
 
 ## Use
 
-To redirect your output to **portera** server import portera module in your project
+Whithout any configuration just import **portera** in your project,
 
 ```js
 const portera = require("portera");
@@ -29,7 +29,7 @@ const portera = require("portera");
 portera();
 ```
 
-portera using configuration
+Or portera using a more detailed configuration
 
 ```js
 const portera = require("portera");
@@ -39,7 +39,7 @@ const portera = require("portera");
 portera({
   host: "http://localhost:3001",
   obj: console,
-  performance: 0,
+  use: process.env.NODE_ENV === "production" ? [] : null,
 });
 ```
 
@@ -51,7 +51,8 @@ const debug = {}
 portera({
   host: "http://localhost:3001",
   obj: debug,
-  performance: 0});
+  performance: 0
+});
 
 debug.log(...)
 debug.info(...)
@@ -59,13 +60,31 @@ debug.info(...)
 
 ## Portera configuration
 
-- `host` where portera server is running by default if not specified http://localhost:3001
+- `host` where portera server is running by default `http://localhost:3001`
 - `obj` the object to use by default `console`
 - `performance` time in ms to obtain data performance by default 0 that is disabled
+- `use` - an optional array with name methods, that should be added or replaced by default if not specified contains all `["log", "info", "warn", "error", "assert", "trace", "btrace", "stack", "dump"]`
+- `nouse` - an optional array with the name of methods that should emptyed
+
+You can use portera as development tool and later in other environment select the methods that you want.
+
+```js
+const portera = require("portera");
+portera({
+  use: ["btrace", "stack", "logobj"],
+  nouse: ["log"]
+});
+
+console.logobj(...) // portera method
+console.info(...) // console default method
+console.log(...) // will be hidden {}
+```
+
+**portera** should use defaults for host, object, and performance and only will be added to console the specified methods in `use` option, default methods from `console` keep untouched except `log` that is is specified in `nouse` will remain hidden. You can mantain this in your code but deactivated.
 
 ## Portera server
 
-**portera** server runs on port 3001 by default, you can change this using an argument when execute portera, see below. Once running you can open your favorite browser using portera address http://<portera_server_ip>:3001
+**portera** server runs on port 3001 by default, you can change this using an argument when execute **portera**, see below. Once running you can open your favorite browser using **portera** address http://<portera_server_ip>:3001
 
 Run portera server
 
@@ -73,7 +92,7 @@ Run portera server
 $ npx portera
 ```
 
-Once running you will see portera otput both in the server console and in the web client. To use web client you can open your favorite browser using the portera address `http://<portera_server_ip>:3001`
+Once running you will see portera output both in the server console and in the web client. To use the amazing web client you can open your favorite browser using the portera address `http://<portera_server_ip>:3001`
 
 ## Portera web client
 
@@ -85,15 +104,15 @@ _ms_ displayed on the right of the log page are time made between calls in your 
 
 Current data session are stored in the browser using your local machine storage you can delete this using "clear session" button on top, meanwhile you can clear your screen using "clear" button, but the data will be there next time you reload the page.
 
-## Portera performance analytics
+## Portera performance monitor
 
-I added it to show analytics data that node offers. To reach performance data add `/performance` to your server url
+I added it to show some cpu & memory data that node offers via proccess. To reach performance data add `/performance` to your server url
 
 > `http://localhost:3001/performance`
 
-![Sample Performance](/docs/portera_performance.gif)
+![Sample Performance](/docs/portera_performance_0-0-20.gif)
 
-Data is collected each time specified in the `performance` parameter when portera is initialized. Time should be expressd in ms. It is by default disabled 0. I recommend values beginning from 1000 (1s)
+Data is collected each time specified in the `performance` parameter when portera is initialized. Time should be expressd in ms. By default is disabled 0. I recommend values beginning from 1000 (1s)
 
 - `event.loop` the even loop lag in ms
 - `cpu.user` cpu user time in ms
@@ -106,7 +125,7 @@ I'm sure that there are great tools to measure performance for node applications
 
 ### Portera methods
 
-Will have the same behaviour than original ones if you replaces console. List of methods
+Will have the same behaviour than known original ones.
 
 ```js
 portera.log(...)
@@ -117,11 +136,12 @@ portera.trace(...)
 portera.assert(...)
 ```
 
-New methods
+**portera** add some other interesting functions
 
 ```js
-portera.stack() // do a function trace showing function called previously
-portera.logobg(...) // It's an experiment dumping an entire object, I'm still working on it
+portera.stack() // trace showing only functions called previously
+portera.dump(...) // dump and object amazing
+portera.btrace(...) // better trace - still working on it
 ```
 
 ### Portera server - command line arguments
@@ -133,6 +153,7 @@ Use `-m` or `--mode` to specify two dirent forms of dispaly data in console `-m 
 Use `-s` or `--silent` for silent mode, no console logs.
 
 Sample Console in awe mode by default:
+
 ![Sample Console Image](/docs/portera_console.gif)
 
 ### Motivation
@@ -145,12 +166,13 @@ Then I had another problem, it was that I had only my laptop and it have a littl
 
 ### Note
 
-As always there are a lot of things todo. this was a hobby for this days, but if you want to do portera better no doubt in contact with me.
+As always there are a lot of things to-do. this was a hobby for this days, but if you want to do portera better no doubt in contact with me. I'm novice in node, not programming, this is my second program, I'm willing to learn more ...
 
-### Related Efforts
+### Related Efforts & Thanks
 
 - [renderjson](https://github.com/caldwell/renderjson) - thanks to David Caldwell <david@porkrind.org> by the great renderjeson plugin, used in portera webpage.
 - [chartjs](https://github.com/chartjs/Chart.js) - thanks to all chart.js team.
+- [prism.js](https://prismjs.com/) - lightweight, robust, elegant syntax highlighting library used in portera.
 
 ### TODO
 
