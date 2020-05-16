@@ -1,8 +1,11 @@
 const socket = io();
 
 let pfData = [];
-var chart;
-const MAX_RENDER_POINTS = 200;
+
+var charts = [];
+
+var chart1, chart2;
+const MAX_RENDER_POINTS = 100;
 
 // On performance data received
 socket.on("perf", (msg) => {
@@ -14,36 +17,30 @@ socket.on("perf", (msg) => {
  *  Create performance entries
  */
 function render(msg) {
-  var d = chart.data.datasets;
-  var t = new Date(msg.time);
-  d[0].data.push({ y: hrToMs(msg.el), x: t });
-  d[1].data.push({ y: msToMs(msg.cpu.user), x: t });
-  d[2].data.push({ y: msToMs(msg.cpu.system), x: t });
-  d[3].data.push({ y: bytesToMB(msg.mem.heapUsed), x: t });
-  d[4].data.push({ y: bytesToMB(msg.mem.heapTotal), x: t });
-  chart.update();
-  if (d[0].data.length > MAX_RENDER_POINTS) {
-    d.forEach((d) => d.data.shift());
-  }
-}
+  var chart = getChart("el");
 
-function hrToMs(hrtime) {
-  return hrtime[0] * 1000.0 + hrtime[1] / 1000000.0;
-}
-function msToMs(ns) {
-  return ns / 1000.0;
-}
-function bytesToMB(bytes) {
-  return bytes / 1024.0 / 1024.0;
+  var data = getDataset(chart);
+  var t = new Date(msg.time);
+
+  data[0].data.push({ y: hrToMs(msg.el), x: t });
+
+  chart = getChart("cm");
+  data = getDataset(chart);
+  data[0].data.push({ y: msToMs(msg.cpu.user), x: t });
+  data[1].data.push({ y: msToMs(msg.cpu.system), x: t });
+  data[2].data.push({ y: bytesToMB(msg.mem.heapUsed), x: t });
+  data[3].data.push({ y: bytesToMB(msg.mem.heapTotal), x: t });
+
+  shiftDatasetIfNeeded();
+  updateCharts();
 }
 
 /**
  * UI
  */
 $("#clearScreen").click(() => {
-  var d = chart.data.datasets;
-  d.forEach((d) => (d.data = []));
-  chart.update();
+  clearDatasets();
+  updateCharts();
 });
 
 $("#clearData").click(() => {
@@ -63,8 +60,8 @@ function save(log) {
  */
 
 $(document).ready(() => {
-  var ctx = $("#chart");
-  chart = new Chart(ctx, {
+  var ctx = $("#chart1");
+  chart_el = new Chart(ctx, {
     type: "line",
     data: {
       datasets: [
@@ -74,8 +71,72 @@ $(document).ready(() => {
           borderWidth: 1,
           borderColor: "#3e95cd",
           fill: false,
+          type: "line",
           yAxisID: "y-axis-ms",
         },
+      ],
+    },
+    options: {
+      legend: {
+        display: true,
+        labels: {
+          fontColor: "white",
+        },
+      },
+      title: {
+        display: true,
+        text: "portera performance monitor",
+        position: "top",
+        fontSize: 16,
+        padding: 20,
+        fontColor: "white",
+      },
+      scales: {
+        yAxes: [
+          {
+            type: "linear",
+            display: true,
+            position: "left",
+            id: "y-axis-ms",
+            ticks: {
+              fontColor: "#3e95cd",
+            },
+            gridLines: {
+              color: "#0e0e0e",
+              display: true,
+            },
+            scaleLabel: {
+              display: true,
+              fontSize: 14,
+              labelString: "ms",
+            },
+          },
+        ],
+        xAxes: [
+          {
+            type: "time",
+            distribution: "series",
+            position: "bottom",
+            ticks: {
+              fontColor: "#3e95cd",
+            },
+            gridLines: {
+              color: "#0e0e0e",
+              display: true,
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  charts.push({ name: "el", chart: chart_el });
+
+  ctx = $("#chart2");
+  chart_cpumem = new Chart(ctx, {
+    type: "line",
+    data: {
+      datasets: [
         {
           label: "cpu.user",
           data: [],
@@ -121,10 +182,10 @@ $(document).ready(() => {
       },
       title: {
         display: true,
-        text: "portera performance monitor",
+        //text: "portera performance monitor",
         position: "top",
         fontSize: 16,
-        padding: 20,
+        padding: 5,
         fontColor: "white",
       },
       scales: {
@@ -183,14 +244,62 @@ $(document).ready(() => {
       },
     },
   });
+
+  charts.push({ name: "cm", chart: chart_cpumem });
+
   // restore
   pfData = JSON.parse(localStorage.getItem("pfData") || "[]");
-  console.log(pfData);
   if (pfData) {
     pfData.forEach((e) => render(e));
   }
 });
 
+/**
+ * chart managemet
+ */
+
+function getChart(chartName) {
+  var chart = charts.find((chart) => chart.name == chartName);
+  return chart.chart;
+}
+
+function getDataset(chart) {
+  return chart.data.datasets;
+}
+
+function updateCharts() {
+  charts.map((c) => c.chart.update());
+}
+
+function shiftDatasetIfNeeded() {
+  charts.map((c) => {
+    getDataset(c.chart).forEach((d) => {
+      if (d.data.length > MAX_RENDER_POINTS) {
+        d.data.shift();
+      }
+    });
+  });
+}
+
+function clearDatasets() {
+  charts.map((c) => {
+    getDataset(c.chart).forEach((d) => (d.data = []));
+  });
+}
+
+/**
+ *  Adjust measures
+ */
+
+function hrToMs(hrtime) {
+  return hrtime[0] * 1000.0 + hrtime[1] / 1000000.0;
+}
+function msToMs(ns) {
+  return ns / 1000.0;
+}
+function bytesToMB(bytes) {
+  return bytes / 1024.0 / 1024.0;
+}
 /**
  *  Parameters
  */
