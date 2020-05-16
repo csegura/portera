@@ -10,7 +10,7 @@
 
   <body class="bg-gray-900 flex justify-center mb-32">
     <div class="text-white lg:container bg-transparent">
-      <div class="flex fixed right-0 z-100 h-6 pr-10">
+      <div class="fixed right-0 z-100 h-6 pr-10">
         <button id="clearScreen" class="hover:bg-gray-400 py-0 px-2 text-xs">
           clear
         </button>
@@ -18,9 +18,9 @@
           clear session
         </button>
       </div>
-      <div class="grid grid-cols-1">
-        <canvas id="chart1" class="w-screen h-screen"></canvas>
-        <canvas id="chart2"></canvas>
+      <div class="grid grid-cols-1 grid-rows-2 w-screen h-screen p-2">
+        <div><canvas id="chart1"></canvas></div>
+        <div><canvas id="chart2"></canvas></div>
       </div>
     </div>
   </body>

@@ -77,6 +77,8 @@ $(document).ready(() => {
       ],
     },
     options: {
+      maintainAspectRatio: false,
+      responsive: true,
       legend: {
         display: true,
         labels: {
@@ -174,6 +176,8 @@ $(document).ready(() => {
       ],
     },
     options: {
+      maintainAspectRatio: false,
+      responsive: true,
       legend: {
         display: true,
         labels: {
@@ -238,6 +242,10 @@ $(document).ready(() => {
             gridLines: {
               color: "#0e0e0e",
               display: true,
+            },
+            scaleLabel: {
+              display: true,
+              fontSize: 6,
             },
           },
         ],
