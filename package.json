@@ -1,7 +1,7 @@
 {
   "name": "portera",
-  "version": "0.0.12",
-  "description": "Awesome remote logs for node. Portera always listen!!",
+  "version": "0.0.20",
+  "description": "bored with console logs? Awesome remote logs for node",
   "main": "./lib/portera.js",
   "bin": {
     "portera": "./bin/app.js"
