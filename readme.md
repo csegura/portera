@@ -110,7 +110,7 @@ I added it to show some cpu & memory data that node offers via proccess. To reac
 
 > `http://localhost:3001/performance`
 
-![Sample Performance](/docs/portera_performance_0-0-20.gif)
+![Sample Performance](/docs/portera_performance_0-0-22.gif)
 
 Data is collected each time specified in the `performance` parameter when portera is initialized. Time should be expressd in ms. By default is disabled 0. I recommend values beginning from 1000 (1s)
 
@@ -154,7 +154,7 @@ Use `-s` or `--silent` for silent mode, no console logs.
 
 Sample Console in awe mode by default:
 
-![Sample Console Image](/docs/portera_console.gif)
+![Sample Console Image](/docs/portera_console-0-0-22.gif)
 
 ### Motivation
 
