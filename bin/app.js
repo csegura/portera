@@ -48,13 +48,14 @@ server.listen(options.port, "0.0.0.0", () => {
 
 function serverLog(msg) {
   const logTheme = {
-    log: chalk.gray,
-    info: chalk.white,
-    warn: chalk.yellow,
-    error: chalk.red,
-    trace: chalk.orange,
-    assert: chalk.cyan,
-    stack: chalk.green,
+    log: chalk.black.bgHex("#65b23e"),
+    info: chalk.black.bgHex("#b2b23e"),
+    warn: chalk.black.bgHex("#ffbb32"),
+    error: chalk.black.bgHex("#ff3232"),
+    trace: chalk.white.bgHex("#e53975"),
+    assert: chalk.white.bgHex("#a58308"),
+    stack: chalk.white.bgHex("#0094b2"),
+    dump: chalk.black.bgHex("#39b4e5"),
   };
 
   const jsonTheme = {
@@ -73,12 +74,7 @@ function serverLog(msg) {
     }
 
     if (noCompatible) {
-      json = json
-        //.replace(/(?:\\\\[rn])+/g, "\n") // pretty cr
-        .replace(/[\x09-\x0E]/gim, "\n")
-        //.replace(/[^\\\\n][\\]\n/gm, "\n"); //.replace(/[^\x20-\x7E]/gim, "")
-        .replace(/\\n\b/g, "\n"); // \n by <br/>
-      // .replace(/\\"/g, "'"); // change \" by '
+      json = json.replace(/[\x09-\x0E]/gim, "\n").replace(/\\n\b/g, "\n"); // \n by <br/>
     }
 
     // Hat tip to PumBaa80 http://stackoverflow.com/questions/4810841/json-pretty-print-using-javascript
@@ -89,7 +85,7 @@ function serverLog(msg) {
   };
 
   const color = logTheme[msg.kind] || chalk.red;
-  const fmtTime = chalk.magentaBright(new Date(msg.time).toTimeString().substring(0, 8));
+  const fmtTime = chalk.magentaBright.bgHex("#0b0b0b")(new Date(msg.time).toTimeString().substring(0, 8));
   const fmtKind = color(`[${msg.kind.padStart(5)}]`);
 
   let parts = msg.args.map((part, i) => {
