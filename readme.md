@@ -6,7 +6,7 @@
 
 **portera** has two parts, a library that wrap your console object by default, redirecting the output to **portera** server, its receive your data and serve a web page where you can display an awesome output, just like that
 
-![Sample Web](/docs/portera_0-1-0.gif)
+![Sample Web](/docs/portera_web_0-1-0.gif)
 
 ## Installation
 
