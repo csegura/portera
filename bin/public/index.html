@@ -4,49 +4,56 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" />
+    <!-- <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" /> -->
     <link rel="stylesheet" href="json.css" />
+    <link rel="stylesheet" href="portera.css" />
     <link rel="stylesheet" href="./assets/prism.css" />
     <title>p_o_r_t_e_r_a</title>
   </head>
 
-  <body class="bg-gray-900 justify-center mb-32">
-    <div class="text-white lg:container bg-transparent">
-      <div class="fixed w-screen top-0 z-2 bg-gray-800">
-        <div class="absolute top-0 right-0 bg-gray-800 z-6">
-          <input id="search" name="search" class="bg-gray-600 text-xs mr-8" datalist="groupList" placeholder="group" autocomplete="on"></input>
-          <datalist class="bg-gray-600 text-xs" id="groupList"></datalist>  
+  <body>
+    <div id="container">
+      <div id="nav">
+        <div id="search_nav">
+          <input id="search" name="search" datalist="groupList" placeholder="group" autocomplete="on"></input>
+          <datalist id="group_list"></datalist>  
         </div>
-        <button id="clearScreen" class="hover:bg-gray-400 px-2 text-xs">
+        <button id="clearScreen" class="btn">
           clear
         </button>
-        <button id="clearAllLogs" class="hover:bg-gray-600 px-2 text-xs">
+        <button id="clearAllLogs" class="btn">
           clear session
         </button>
-        <button id="toogleKlog" class="hover:bg-gray-400 px-2 text-xs">
-          🔊 logs
+        <button id="toogleKlog" class="onoff">
+          🔊 log
         </button>
-        <button id="toogleKinfo" class="hover:bg-gray-400 px-2 text-xs">
-          🔊 infos
+        <button id="toogleKinfo" class="onoff">
+          🔊 inf
         </button>
-        <button id="toogleKwarn" class="hover:bg-gray-400 px-2 text-xs">
-          🔊 warns
+        <button id="toogleKwarn" class="onoff">
+          🔊 war
         </button>
-        <button id="toogleKtrace" class="hover:bg-gray-400 px-2 text-xs">
-          🔊 traces
+        <button id="toogleKtrace" class="onoff">
+          🔊 tra
         </button>
-        <button id="toogleKerror" class="hover:bg-gray-400 px-2 text-xs">
-          🔊 errors
+        <button id="toogleKerror" class="onoff">
+          🔊 err
         </button>
-        <button id="toogleKdump" class="hover:bg-gray-400 px-2 text-xs">
-          🔊 dumps
+        <button id="toogleKassert" class="onoff">
+          🔊 ass
+        </button>
+        <button id="toogleKstack" class="onoff">
+          🔊 sta
+        </button>
+        <button id="toogleKdump" class="onoff">
+          🔊 dum
         </button>
         <a href="#/" id="toogle">&#128035;</a>
-        <span class="text-xs ml-5">p o r t e r a 🚀 log viewer</span>
+        <span>p o r t e r a 🚀 log viewer</span>
       </div>
 
-      <div id="log" class="flex-grow mt-5">
-        <div class="flex-shrink text-6xl text-center my-32">
+      <div id="log">
+        <div class="title">
           p o r t e r a 🚀
         </div>
       </div>

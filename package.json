@@ -14,13 +14,18 @@
     "stdio": "^2.1.1"
   },
   "devDependencies": {
+    "autoprefixer": "^9.8.0",
     "eslint": "^7.0.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "postcss": "^7.0.30",
+    "postcss-import": "^12.0.1",
+    "tailwindcss": "^1.4.6"
   },
   "scripts": {
     "start": "node ./bin/app.js",
     "dev": "nodemon ./bin/app.js",
-    "debug": "nodemon --inspect ./bin/app.js"
+    "debug": "nodemon --inspect ./bin/app.js",
+    "postcss": "postcss -c postcss.config.js -o ./bin/public/portera.css ./bin/public/css/*.pcss"
   },
   "author": "Carlos Segura <romheat@gmail.com> (https://github.com/csegura)",
   "license": "MIT",
