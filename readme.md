@@ -75,7 +75,7 @@ portera({
   nouse: ["log"]
 });
 
-console.logobj(...) // portera method
+console.dump(...) // portera dump method
 console.info(...) // console default method
 console.log(...) // will be hidden {}
 ```
