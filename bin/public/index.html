@@ -10,37 +10,42 @@
     <title>p_o_r_t_e_r_a</title>
   </head>
 
-  <body class="bg-gray-900 flex justify-center mb-32">
+  <body class="bg-gray-900 justify-center mb-32">
     <div class="text-white lg:container bg-transparent">
-      <div class="flex fixed right-0 z-100 h-6 pr-10">
-        <button id="clearScreen" class="hover:bg-gray-400 py-0 px-2 text-xs">
+      <div class="fixed w-screen top-0 z-2 bg-gray-800">
+        <div class="absolute top-0 right-0 bg-gray-800 z-6">
+          <input id="search" name="search" class="bg-gray-600 text-xs mr-8" datalist="groupList" placeholder="group" autocomplete="on"></input>
+          <datalist class="bg-gray-600 text-xs" id="groupList"></datalist>  
+        </div>
+        <button id="clearScreen" class="hover:bg-gray-400 px-2 text-xs">
           clear
         </button>
-        <button id="clearAllLogs" class="hover:bg-gray-600 py-0 px-2 text-xs">
+        <button id="clearAllLogs" class="hover:bg-gray-600 px-2 text-xs">
           clear session
         </button>
-        <button id="toogleKlog" class="hover:bg-gray-400 py-0 px-2 text-xs">
+        <button id="toogleKlog" class="hover:bg-gray-400 px-2 text-xs">
           🔊 logs
         </button>
-        <button id="toogleKinfo" class="hover:bg-gray-400 py-0 px-2 text-xs">
+        <button id="toogleKinfo" class="hover:bg-gray-400 px-2 text-xs">
           🔊 infos
         </button>
-        <button id="toogleKwarn" class="hover:bg-gray-400 py-0 px-2 text-xs">
+        <button id="toogleKwarn" class="hover:bg-gray-400 px-2 text-xs">
           🔊 warns
         </button>
-        <button id="toogleKtrace" class="hover:bg-gray-400 py-0 px-2 text-xs">
+        <button id="toogleKtrace" class="hover:bg-gray-400 px-2 text-xs">
           🔊 traces
         </button>
-        <button id="toogleKerror" class="hover:bg-gray-400 py-0 px-2 text-xs">
+        <button id="toogleKerror" class="hover:bg-gray-400 px-2 text-xs">
           🔊 errors
         </button>
-        <button id="toogleKdump" class="hover:bg-gray-400 py-0 px-2 text-xs">
+        <button id="toogleKdump" class="hover:bg-gray-400 px-2 text-xs">
           🔊 dumps
         </button>
         <a href="#/" id="toogle">&#128035;</a>
+        <span class="text-xs ml-5">p o r t e r a 🚀 log viewer</span>
       </div>
 
-      <div id="log" class="flex-grow">
+      <div id="log" class="flex-grow mt-5">
         <div class="flex-shrink text-6xl text-center my-32">
           p o r t e r a 🚀
         </div>

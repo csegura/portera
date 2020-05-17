@@ -3,6 +3,7 @@ const socket = io();
 //get all of our elements
 let logData = [];
 let lastTime = Date.now();
+let groupList = [];
 
 // On log received
 socket.on("log", (msg) => {
@@ -59,13 +60,13 @@ const logStatus = {
   stack: {
     visible: true,
     bg_color: ["bg-blue-900", "bg-opacity-25"],
-    bullet: "🚀",
+    bullet: "🧱",
     bullet_color: ["text-blue-600"],
   },
   dump: {
     visible: true,
     bg_color: ["bg-transparent"],
-    bullet: "🔦",
+    bullet: "🔍",
     bullet_color: ["text-green-200"],
   },
 };
@@ -109,13 +110,16 @@ function render(msg) {
 
 function elemRow(log) {
   const elem = $("<div>", {
-    class: "flex flex-row mt-0 w-screen ml-5 bg-opacity-25 border-b-1 border-gray-100",
+    class: "flex flex-row mt-0 w-screen ml-0 bg-opacity-25 border-b-1 border-gray-100",
   });
   elem.addClass(log.kind);
+  elem.attr("data", log.group);
   elem.append(elemInfo(log), elemContent(log));
   if (!logStatus[log.kind].visible) {
     elem.hide();
   }
+
+  updateGroups(log);
   return elem;
 }
 
@@ -132,6 +136,9 @@ function elemInfo(log) {
 function elemContent(log) {
   const div = $("<div>", { class: "w-full" });
   const elem = $("<div>", { class: "font-mono text-xs text-gray-600 w-full break-all" });
+  const span = $("<span>", { class: "float-right mr-5 text-xs text-gray-700 group" });
+  span.text(log.group);
+  elem.append(span);
   elem.addClass(logStatus[log.kind].bg_color);
   parseArgs(elem, log.args);
   const delta = $("<div>", { class: "float-right text-yellow-200 text-xs mr-5" });
@@ -173,6 +180,45 @@ function save(msg) {
   }
 }
 
+function updateGroups(msg) {
+  const group = msg.group;
+  if (groupList.indexOf(group) == -1) {
+    groupList.push(group);
+    const opt = $("<option>").attr("value", group);
+    $("#groupList").append(opt);
+    $("#search").attr("list", "groupList");
+  }
+}
+
+function filterGroup(txt) {
+  if (txt) {
+    const rexp = new RegExp(txt, "ig");
+    $("#log > div:visible").each((i, e) => {
+      var el = $(e).attr("data");
+      if (el && el.match(rexp)) {
+        $(e).show();
+      } else {
+        $(e).hide();
+      }
+    });
+  } else {
+    $("#log > div").show();
+    setButtonStatus(true);
+  }
+}
+
+function setButtonStatus(visibles) {
+  Object.keys(logStatus).forEach((k) => {
+    const button = $("#toogleK" + k);
+    if (logStatus[k].visible || visibles) {
+      if (visibles) logStatus[k].visible = true;
+      button.text("🔊 " + k + "s");
+    } else {
+      button.text("🔈 " + k + "s");
+    }
+  });
+}
+
 /**
  * Start
  */
@@ -189,8 +235,10 @@ $(document).ready(() => {
     key.click(() => {
       const elms = $("." + e);
       logStatus[e].visible = !logStatus[e].visible;
-      elms.fadeToggle(800);
-      key.text(key.text() == "🔈 " + es ? "🔊 " + es : "🔈 " + es);
+      logStatus[e].visible ? elms.fadeIn(800) : elms.fadeOut(800);
+      //elms.fadeToggle(800);
+      //key.text(key.text() == "🔈 " + es ? "🔊 " + es : "🔈 " + es);
+      setButtonStatus(false);
     });
   });
 
@@ -200,6 +248,10 @@ $(document).ready(() => {
       .get()
       .forEach((e) => e.click(e));
     a.text(a.text() == "🥚" ? "🐣" : "🥚");
+  });
+
+  $("#search").on("change keydown input", () => {
+    filterGroup($("#search").val());
   });
 });
 
