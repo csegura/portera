@@ -166,9 +166,9 @@ function setButtonStatus(visibles) {
     const button = $("#toogleK" + k);
     if (btns[k] || visibles) {
       if (visibles) btns[k] = true;
-      button.text("🔊 " + k.substring(0, 3));
+      button.text("🔊 " + k);
     } else {
-      button.text("🔈 " + k.substring(0, 3));
+      button.text("🔈 " + k);
     }
   });
 }

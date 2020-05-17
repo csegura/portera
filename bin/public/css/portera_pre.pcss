@@ -1,4 +1,5 @@
 @import "tailwindcss/base";
+@tailwind screens;
 
 body {
   @apply bg-gray-900 justify-center mb-32;
@@ -12,19 +13,23 @@ body {
   @apply fixed text-white w-screen top-0 z-40 bg-gray-800;
 }
 
-.banner {
-  @apply text-xs ml-5;
+@screen sm {
+  .banner {
+    @apply invisible;
+  }
+}
+
+@screen lg {
+  .banner {
+    @apply text-xs ml-5;
+    @apply visible;
+  }
 }
 
 #search_nav {
   @apply absolute top-0 right-0 bg-gray-800 z-50;
 }
 
-@screen sm {
-  .banner {
-    @apply invisible;
-  }
-}
 .btn {
   @apply px-1 text-xs;
 }
