@@ -19,56 +19,15 @@ var level = getUrlParameter("l") || 4;
 renderjson.set_icons("+", "-");
 renderjson.set_show_to_level(level);
 
-// https://unicode-table.com/es/#miscellaneous-symbols
-const logStatus = {
-  log: {
-    visible: true,
-    bg_color: ["bg-transparent"],
-    bullet: "📝",
-    bullet_color: ["text-green-600"],
-  },
-  info: {
-    visible: true,
-    bg_color: ["bg-indigo-900", "bg-opacity-25"],
-    bullet: "💬",
-    bullet_color: ["text-blue-600"],
-  },
-  warn: {
-    visible: true,
-    bg_color: ["bg-indigo-900", "bg-opacity-75"],
-    bullet: "📢",
-    bullet_color: ["text-orange-600"],
-  },
-  error: {
-    visible: true,
-    bg_color: ["bg-pink-900", "bg-opacity-25"],
-    bullet: "💥",
-    bullet_color: ["text-pink-600"],
-  },
-  trace: {
-    visible: true,
-    bg_color: ["bg-indigo-900", "bg-opacity-25"],
-    bullet: "👓",
-    bullet_color: ["text-teal-600"],
-  },
-  assert: {
-    visible: true,
-    bg_color: ["bg-red-900", "bg-opacity-25"],
-    bullet: "🔥",
-    bullet_color: ["text-red-600"],
-  },
-  stack: {
-    visible: true,
-    bg_color: ["bg-blue-900", "bg-opacity-25"],
-    bullet: "🧱",
-    bullet_color: ["text-blue-600"],
-  },
-  dump: {
-    visible: true,
-    bg_color: ["bg-transparent"],
-    bullet: "🔍",
-    bullet_color: ["text-green-200"],
-  },
+const btns = {
+  log: true,
+  info: true,
+  warn: true,
+  error: true,
+  trace: true,
+  assert: true,
+  stack: true,
+  dump: true,
 };
 
 function parseArgs(elem, args) {
@@ -97,8 +56,7 @@ function _renderjson(args) {
  *  Create log entries
  */
 function render(msg) {
-  const style = logStatus[msg.kind];
-  var row = elemRow(msg, style);
+  var row = elemRow(msg);
   $("#log").prepend(row);
 
   $(row)
@@ -110,38 +68,34 @@ function render(msg) {
 
 function elemRow(log) {
   const elem = $("<div>", {
-    class: "flex flex-row mt-0 w-screen ml-0 bg-opacity-25 border-b-1 border-gray-100",
+    class: "log_row",
   });
   elem.addClass(log.kind);
   elem.attr("data", log.group);
   elem.append(elemInfo(log), elemContent(log));
-  if (!logStatus[log.kind].visible) {
+  if (!btns[log.kind]) {
     elem.hide();
   }
-
   updateGroups(log);
   return elem;
 }
 
 function elemInfo(log) {
-  const elem = $("<div>", { class: "font-mono text-xs text-pink-600 w-18" });
-  elem.addClass(logStatus[log.kind].bg_color);
-  const bullet = $("<span>", { class: `${logStatus[log.kind].bullet_color}` });
-  bullet.html(`&nbsp;${logStatus[log.kind].bullet}&nbsp;`);
+  const elem = $("<div>", { class: "log_info" });
+  const bullet = $("<span>", { class: `${log.kind}` });
   elem.html(moment(log.time).format("hh:mm:ss"));
   elem.append(bullet);
   return elem;
 }
 
 function elemContent(log) {
-  const div = $("<div>", { class: "w-full" });
-  const elem = $("<div>", { class: "font-mono text-xs text-gray-600 w-full break-all" });
-  const span = $("<span>", { class: "float-right mr-5 text-xs text-gray-700 group" });
+  const div = $("<div>", { class: "log_entry" });
+  const elem = $("<div>", { class: "log_content" });
+  const span = $("<span>", { class: "log_group" });
   span.text(log.group);
   elem.append(span);
-  elem.addClass(logStatus[log.kind].bg_color);
   parseArgs(elem, log.args);
-  const delta = $("<div>", { class: "float-right text-yellow-200 text-xs mr-5" });
+  const delta = $("<div>", { class: "log_delta" });
   delta.html(`${log.delta}ms`);
   div.append(delta, elem);
   return div;
@@ -185,8 +139,8 @@ function updateGroups(msg) {
   if (groupList.indexOf(group) == -1) {
     groupList.push(group);
     const opt = $("<option>").attr("value", group);
-    $("#groupList").append(opt);
-    $("#search").attr("list", "groupList");
+    $("#group_list").append(opt);
+    $("#search").attr("list", "group_list");
   }
 }
 
@@ -208,13 +162,13 @@ function filterGroup(txt) {
 }
 
 function setButtonStatus(visibles) {
-  Object.keys(logStatus).forEach((k) => {
+  Object.keys(btns).forEach((k) => {
     const button = $("#toogleK" + k);
-    if (logStatus[k].visible || visibles) {
-      if (visibles) logStatus[k].visible = true;
-      button.text("🔊 " + k + "s");
+    if (btns[k] || visibles) {
+      if (visibles) btns[k] = true;
+      button.text("🔊 " + k.substring(0, 3));
     } else {
-      button.text("🔈 " + k + "s");
+      button.text("🔈 " + k.substring(0, 3));
     }
   });
 }
@@ -229,15 +183,12 @@ $(document).ready(() => {
   }
 
   // UI
-  ["log", "info", "warn", "trace", "error", "dump"].forEach((e) => {
-    const es = e + "s";
-    const key = $("#toogleK" + e);
+  Object.keys(btns).forEach((k) => {
+    const key = $("#toogleK" + k);
     key.click(() => {
-      const elms = $("." + e);
-      logStatus[e].visible = !logStatus[e].visible;
-      logStatus[e].visible ? elms.fadeIn(800) : elms.fadeOut(800);
-      //elms.fadeToggle(800);
-      //key.text(key.text() == "🔈 " + es ? "🔊 " + es : "🔈 " + es);
+      const elms = $("." + k);
+      btns[k] = !btns[k];
+      btns[k] ? elms.fadeIn(800) : elms.fadeOut(800);
       setButtonStatus(false);
     });
   });

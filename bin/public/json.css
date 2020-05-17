@@ -1,33 +1,3 @@
-pre {
-  /* overflow: auto; */
-  overflow-wrap: break-word;
-  white-space: pre; /* CSS 2.0 */
-  white-space: pre-wrap; /* CSS 2.1 */
-  word-wrap: break-word; /* IE 5+ */
-}
-
-/* json colors 
-.string {
-  color: #2a9292;
-}
-
-.number {
-  color: #aa573c;
-}
-
-.boolean {
-  color: #b22222;
-}
-
-.null {
-  color: #955ae7;
-}
-
-.key {
-  color: #8b8792;
-}
-*/
-
 .renderjson a {
   text-decoration: none;
 }
