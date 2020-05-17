@@ -6,7 +6,7 @@
 
 **portera** has two parts, a library that wrap your console object by default, redirecting the output to **portera** server, its receive your data and serve a web page where you can display an awesome output, just like that
 
-![Sample Web](/docs/portera_0-0-20.gif)
+![Sample Web](/docs/portera_0-1-0.gif)
 
 ## Installation
 
@@ -139,10 +139,15 @@ portera.assert(...)
 **portera** add some other interesting functions
 
 ```js
+portera.group(...) // name your groups
 portera.stack() // trace showing only functions called previously
 portera.dump(...) // dump and object amazing
 portera.btrace(...) // better trace - still working on it
 ```
+
+If no group is specified portera group everything under "portera" group, once a group is specified next calls will be tagged inside of that group while no other is specified.
+
+Inside of portera web you can filter groups using regexp. Enjoy!!
 
 ### Portera server - command line arguments
 
@@ -176,8 +181,9 @@ As always there are a lot of things to-do. this was a hobby for this days, but i
 
 ### TODO
 
+- [ ] Search
 - [ ] Add custom renderers & themes
-- [ ] Group log results
+- [x] Groups & Filter
 - [ ] Timeline
 - [ ] Tests
 
