@@ -623,9 +623,18 @@ body {
   background-color: rgba(45, 55, 72, var(--bg-opacity));
 }
 
-.banner {
-  font-size: 0.75rem;
-  margin-left: 1.25rem;
+@media (min-width: 640px) {
+  .banner {
+    visibility: hidden;
+  }
+}
+
+@media (min-width: 1024px) {
+  .banner {
+    font-size: 0.75rem;
+    margin-left: 1.25rem;
+    visibility: visible;
+  }
 }
 
 #search_nav {
@@ -636,12 +645,6 @@ body {
   background-color: #2d3748;
   background-color: rgba(45, 55, 72, var(--bg-opacity));
   z-index: 50;
-}
-
-@media (min-width: 640px) {
-  .banner {
-    visibility: hidden;
-  }
 }
 
 .btn {
