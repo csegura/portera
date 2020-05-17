@@ -1,0 +1,150 @@
+@import "tailwindcss/base";
+
+body {
+  @apply bg-gray-900 justify-center mb-32;
+}
+
+#container {
+  @apply text-white bg-transparent;
+}
+
+#nav {
+  @apply fixed text-white w-screen top-0 z-40 bg-gray-800;
+}
+
+.banner {
+  @apply text-xs ml-5;
+}
+
+#search_nav {
+  @apply absolute top-0 right-0 bg-gray-800 z-50;
+}
+
+@screen sm {
+  .banner {
+    @apply invisible;
+  }
+}
+.btn {
+  @apply px-1 text-xs;
+}
+
+.onoff {
+  @apply px-1 text-xs w-auto;
+}
+
+.btn:hover {
+  @apply bg-gray-400;
+}
+
+#search {
+  @apply bg-gray-600 text-xs mr-8;
+}
+
+#groupList {
+  @apply bg-gray-600 text-xs;
+}
+
+#log {
+  @apply flex-grow mt-5;
+}
+
+.title {
+  @apply flex-shrink text-6xl text-center my-32;
+}
+
+.credits {
+  @apply text-sm text-center my-12;
+}
+
+.log_row {
+  @apply flex flex-row mt-0 w-screen ml-0 bg-opacity-25 border-gray-100;
+}
+
+.log_info {
+  @apply font-mono text-xs text-pink-600; /* w-20 */
+  display: flex;
+}
+
+.log_entry {
+  @apply w-full;
+}
+
+.log_content {
+  @apply font-mono text-xs text-gray-600 w-full break-all;
+}
+.log_group {
+  @apply float-right mr-5 text-xs text-gray-500;
+}
+.log_delta {
+  @apply float-right text-yellow-200 text-xs mr-5;
+}
+
+pre {
+  /* overflow: auto; */
+  overflow-wrap: break-word;
+  white-space: pre; /* CSS 2.0 */
+  white-space: pre-wrap; /* CSS 2.1 */
+  word-wrap: break-word; /* IE 5+ */
+}
+
+.log {
+  @apply bg-gray-800 bg-opacity-25;
+}
+
+.info {
+  @apply bg-indigo-900 bg-opacity-25;
+}
+
+.warn {
+  @apply bg-indigo-900 bg-opacity-75;
+}
+
+.error {
+  @apply bg-pink-900 bg-opacity-25;
+}
+
+.trace {
+  @apply bg-indigo-900 bg-opacity-25;
+}
+
+.assert {
+  @apply bg-red-900 bg-opacity-25;
+}
+
+.stack {
+  @apply bg-blue-900 bg-opacity-25;
+}
+
+.dump {
+  @apply bg-indigo-700 bg-opacity-25;
+}
+
+.log_info > span {
+  display: inline-block;
+  margin-left: 5px;
+}
+span.log:after {
+  content: "📝";
+}
+span.info:after {
+  content: "💬";
+}
+span.warn:after {
+  content: "📢";
+}
+span.error:after {
+  content: "💥";
+}
+span.trace:after {
+  content: "👓";
+}
+span.assert:after {
+  content: "🔥";
+}
+span.stack:after {
+  content: "🧱";
+}
+span.dump:after {
+  content: "🔍";
+}

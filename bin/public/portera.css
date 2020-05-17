@@ -623,7 +623,7 @@ body {
   background-color: rgba(45, 55, 72, var(--bg-opacity));
 }
 
-#nav > span {
+.banner {
   font-size: 0.75rem;
   margin-left: 1.25rem;
 }
@@ -636,6 +636,12 @@ body {
   background-color: #2d3748;
   background-color: rgba(45, 55, 72, var(--bg-opacity));
   z-index: 50;
+}
+
+@media (min-width: 640px) {
+  .banner {
+    visibility: hidden;
+  }
 }
 
 .btn {
@@ -685,6 +691,13 @@ body {
   margin-bottom: 8rem;
 }
 
+.credits {
+  font-size: 0.875rem;
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
 .log_row {
   display: flex;
   flex-direction: row;
@@ -725,8 +738,8 @@ body {
   margin-right: 1.25rem;
   font-size: 0.75rem;
   --text-opacity: 1;
-  color: #4a5568;
-  color: rgba(74, 85, 104, var(--text-opacity));
+  color: #a0aec0;
+  color: rgba(160, 174, 192, var(--text-opacity));
 }
 
 .log_delta {
