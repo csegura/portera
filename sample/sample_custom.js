@@ -2,7 +2,7 @@ const portera = require("../lib/portera");
 const debug = {};
 portera({
   host: "http://localhost:3001",
-  obj: debug
+  obj: debug,
 });
 
 const o = {
