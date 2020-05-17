@@ -2,3 +2,4 @@ docs
 sample
 .vscode
 bin/public/css
+_config.yml
