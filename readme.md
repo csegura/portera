@@ -71,7 +71,7 @@ You can use portera as development tool and later in other environment select th
 ```js
 const portera = require("portera");
 portera({
-  use: ["btrace", "stack", "logobj"],
+  use: ["btrace", "stack", "dump"],
   nouse: ["log"]
 });
 
@@ -148,6 +148,18 @@ portera.btrace(...) // better trace - still working on it
 If no group is specified portera group everything under "portera" group, once a group is specified next calls will be tagged inside of that group while no other is specified.
 
 Inside of portera web you can filter groups using regexp. Enjoy!!
+
+`portera.dump(...)` dump an object to the console try `portera.dump(console)` or `portera.dump(process)`
+
+```js
+function add(a, b) {
+  console.stack();
+  return a + b;
+}
+console.dump([add]); // to dump a function
+```
+
+![output](/docs/portera_dump_sample.png)
 
 ### Portera server - command line arguments
 
