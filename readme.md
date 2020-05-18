@@ -10,10 +10,10 @@
 
 ## Installation
 
-Install **portera** in your dev environment
+Install **portera** in your dev environment, or better -g (globally) in your toolbox
 
 ```sh
-$ npm install portera --save-dev`
+$ npm install portera --save-dev
 ```
 
 ## Use
@@ -106,7 +106,7 @@ Current data session are stored in the browser using your local machine storage 
 
 ## Portera performance monitor
 
-I added it to show some cpu & memory data that node offers via proccess. To reach performance data add `/performance` to your server url
+I added it to show some cpu & memory data that node offers via proccess. To reach performance data add `/performance` to your server url and setup `performance` parameter in portera configuration
 
 > `http://localhost:3001/performance`
 
@@ -160,6 +160,14 @@ Use `-s` or `--silent` for silent mode, no console logs.
 Sample Console in awe mode by default:
 
 ![Sample Console Image](/docs/portera_console-0-0-22.gif)
+
+### Upgrade
+
+**portera** is a tool as such I recommend update always to the latest version
+
+```js
+npm update -g portera@latest
+```
 
 ### Motivation
 
