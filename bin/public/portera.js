@@ -35,14 +35,14 @@ function parseArgs(elem, args) {
     if (typeof args[0] === "object") {
       elem.append(_renderjson(args[0]));
     } else {
-      elem.html(args[0]);
+      elem.html(clearJson(args[0]));
     }
   } else {
     args.map((arg) => {
       if (typeof arg === "object") {
         elem.append(_renderjson(arg));
       } else {
-        elem.append($("<div>").html(arg));
+        elem.append($("<div>").html(clearJson(arg)));
       }
     });
   }
@@ -51,7 +51,17 @@ function parseArgs(elem, args) {
 function _renderjson(args) {
   return $("<div>", { class: ".json" }).append(renderjson(args));
 }
+function clearJson(json) {
+  const ansi_ecapes = new RegExp(
+    [
+      "[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)",
+      "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))",
+    ].join("|"),
+    "g"
+  );
 
+  return json.replace(ansi_ecapes, "");
+}
 /**
  *  Create log entries
  */
