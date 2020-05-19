@@ -684,6 +684,9 @@ body {
 #log {
   flex-grow: 1;
   margin-top: 1.25rem;
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
 .title {
@@ -738,7 +741,7 @@ body {
 
 .log_group {
   float: right;
-  margin-right: 1.25rem;
+  margin-right: 0.25rem;
   font-size: 0.75rem;
   --text-opacity: 1;
   color: #a0aec0;
@@ -752,6 +755,9 @@ body {
   color: rgba(254, 252, 191, var(--text-opacity));
   font-size: 0.75rem;
   margin-right: 1.25rem;
+  width: 55px;
+  -moz-text-align-last: right;
+       text-align-last: right;
 }
 
 pre {
@@ -821,6 +827,7 @@ pre {
 .log_info > span {
   display: inline-block;
   margin-left: 5px;
+  margin-right: 5px;
 }
 
 span.log:after {

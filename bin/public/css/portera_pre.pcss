@@ -52,6 +52,7 @@ body {
 
 #log {
   @apply flex-grow mt-5;
+  @apply font-mono subpixel-antialiased;
 }
 
 .title {
@@ -79,10 +80,12 @@ body {
   @apply font-mono text-xs text-gray-600 w-full break-all;
 }
 .log_group {
-  @apply float-right mr-5 text-xs text-gray-500;
+  @apply float-right mr-1 text-xs text-gray-500;
 }
 .log_delta {
   @apply float-right text-yellow-200 text-xs mr-5;
+  width: 55px;
+  text-align-last: right;
 }
 
 pre {
@@ -128,6 +131,7 @@ pre {
 .log_info > span {
   display: inline-block;
   margin-left: 5px;
+  margin-right: 5px;
 }
 span.log:after {
   content: "📝";
