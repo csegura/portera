@@ -1,24 +1,16 @@
+// g.scope
 const socket = io();
-
-//get all of our elements
 let logData = [];
 let lastTime = Date.now();
 let groupList = [];
-
-// On log received
-socket.on("log", (msg) => {
-  const logTime = msg.time;
-  msg.delta = logTime - lastTime;
-  lastTime = logTime;
-  render(msg);
-  save(msg);
-});
+let collapse = false;
 
 // renderjson
-var level = getUrlParameter("l") || 4;
+const level = getUrlParameter("l") || 4;
 renderjson.set_icons("+", "-");
 renderjson.set_show_to_level(level);
 
+// status
 const btns = {
   log: true,
   info: true,
@@ -29,6 +21,15 @@ const btns = {
   stack: true,
   dump: true,
 };
+
+// On log received
+socket.on("log", (msg) => {
+  const logTime = msg.time;
+  msg.delta = logTime - lastTime;
+  lastTime = logTime;
+  render(msg);
+  save(msg);
+});
 
 function parseArgs(elem, args) {
   if (args.length == 1) {
@@ -51,6 +52,7 @@ function parseArgs(elem, args) {
 function _renderjson(args) {
   return $("<div>", { class: ".json" }).append(renderjson(args));
 }
+
 function clearJson(json) {
   const ansi_ecapes = new RegExp(
     [
@@ -59,9 +61,9 @@ function clearJson(json) {
     ].join("|"),
     "g"
   );
-
   return json.replace(ansi_ecapes, "");
 }
+
 /**
  *  Create log entries
  */
@@ -101,13 +103,13 @@ function elemInfo(log) {
 function elemContent(log) {
   const div = $("<div>", { class: "log_entry" });
   const elem = $("<div>", { class: "log_content" });
-  const span = $("<span>", { class: "log_group" });
-  span.text(log.group);
-  elem.append(span);
+  const group = $("<span>", { class: "log_group" });
+  const delta = $("<span>", { class: "log_delta" });
+  delta.text(`${log.delta}ms`);
+  group.text(log.group);
+  elem.append(delta, group);
   parseArgs(elem, log.args);
-  const delta = $("<div>", { class: "log_delta" });
-  delta.html(`${log.delta}ms`);
-  div.append(delta, elem);
+  div.append(elem);
   return div;
 }
 
@@ -192,7 +194,7 @@ $(document).ready(() => {
     logData.forEach((e) => render(e));
   }
 
-  // UI
+  // UI Buttons
   Object.keys(btns).forEach((k) => {
     const key = $("#toogleK" + k);
     key.click(() => {
@@ -203,9 +205,12 @@ $(document).ready(() => {
     });
   });
 
+  // Toogle tree
   $("#toogle").click(() => {
     var a = $("#toogle");
-    $("span:visible > a.disclosure")
+    var sel = collapse ? "a.disclosure:contains(+)" : "a.disclosure:contains(-)";
+    collapse = !collapse;
+    $(sel)
       .get()
       .forEach((e) => e.click(e));
     a.text(a.text() == "🥚" ? "🐣" : "🥚");
