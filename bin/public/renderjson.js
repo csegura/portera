@@ -71,6 +71,9 @@ var module,
         spans.push(append(span(Array.prototype.shift.call(arguments)), text(Array.prototype.shift.call(arguments))));
       return spans;
     };
+    var toJson = function (obj) {
+      return (json = JSON.stringify(obj));
+    };
     var append = function (/* el, ... */) {
       var el = Array.prototype.shift.call(arguments);
       for (var a = 0; a < arguments.length; a++)
@@ -128,7 +131,7 @@ var module,
       return a;
     };
 
-    // cs: highlight sing prisma
+    // cs: highlight using prisma
     var highlightPrism = (e) => {
       if (e && e.target && e.target.nextSibling.className.indexOf("code") >= 0) {
         if (e.target.parentNode.nextSibling) Prism.highlightAllUnder(e.target.parentNode.nextSibling);
@@ -171,21 +174,11 @@ var module,
       };
 
       // cs: subrender code
-      var rendercode = (json, indent) => {
-        return disclosure("(", "code ...", ")", "code", function () {
+      var render_code = (json, indent, msg, render) => {
+        return disclosure("(", msg, ")", "code", function () {
           var as = append(span("code"), themetext("code syntax", "(", null, ""));
           var pad = indent.length * 2;
-          append(as, code(" ".padStart(pad) + json.substring(4).replace(/\n/g, "\n".padEnd(pad))));
-          append(as, themetext(null, indent, "code syntax", ")"));
-          return as;
-        });
-      };
-
-      var rendertrace = (json, indent) => {
-        return disclosure("(", "trace ...", ")", "code", function () {
-          var as = append(span("code"), themetext("code syntax", "(", null, ""));
-          var pad = indent.length * 2;
-          append(as, trace(" ".padStart(pad) + json.substring(4).replace(/\n/g, "\n".padEnd(pad))));
+          append(as, render(" ".padStart(pad) + json.substring(4).replace(/\n/g, "\n".padEnd(pad))));
           append(as, themetext(null, indent, "code syntax", ")"));
           return as;
         });
@@ -196,17 +189,16 @@ var module,
 
       if (typeof json == "string" && json.length > options.max_string_length) {
         return disclosure('"', json.substr(0, options.max_string_length) + " ...", '"', "string", function () {
-          return append(span("string"), themetext(null, my_indent, "string", JSON.stringify(json)));
+          return append(span("string"), themetext(null, my_indent, "string", toJson(json)));
         });
       }
 
       if (typeof json != "object" || [Number, String, Boolean, Date].indexOf(json.constructor) >= 0) {
-        // cs: render code for prism
-        if ([String].indexOf(json.constructor) >= 0 && json.substr(0, 4) === "[fn]") {
-          return rendercode(json, indent);
-        }
-        if ([String].indexOf(json.constructor) >= 0 && json.substr(0, 4) === "[tr]") {
-          return rendertrace(json, indent);
+        // cs: render code/trace for prism
+        if ([String].indexOf(json.constructor) >= 0) {
+          var key = json.substr(0, 4);
+          if (key === "[fn]") return render_code(json, indent, "code ...", code);
+          if (key === "[tr]") return render_code(json, indent, "trace ...", trace);
         }
 
         // Strings, numbers and bools
@@ -214,7 +206,7 @@ var module,
           null,
           my_indent,
           typeof json,
-          JSON.stringify(json)
+          toJson(json)
             //.replace(/(?:\\\\[rn])+/g, "\n")
             .replace(/\\n\b/g, "\n")
         );
