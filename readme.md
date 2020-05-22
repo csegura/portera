@@ -63,7 +63,7 @@ debug.info(...)
 - `host` where portera server is running by default `http://localhost:3001`
 - `obj` the object to use by default `console`
 - `performance` time in ms to obtain data performance by default 0 that is disabled
-- `use` - an optional array with name methods, that should be added or replaced by default if not specified contains all `["log", "info", "warn", "error", "assert", "trace", "btrace", "stack", "dump"]`
+- `use` - an optional array with name methods, that should be added or replaced by default if not specified contains all `["log", "info", "warn", "error", "assert", "trace", "btrace", "stack", "dir"]`
 - `nouse` - an optional array with the name of methods that should emptyed
 
 You can use portera as development tool and later in other environment select the methods that you want.
@@ -71,11 +71,11 @@ You can use portera as development tool and later in other environment select th
 ```js
 const portera = require("portera");
 portera({
-  use: ["btrace", "stack", "dump"],
+  use: ["btrace", "stack", "dir"],
   nouse: ["log"]
 });
 
-console.dump(...) // portera dump method
+console.dir(...) // portera dir method
 console.info(...) // console default method
 console.log(...) // will be hidden {}
 ```
@@ -134,6 +134,7 @@ portera.warn(...)
 portera.error(...)
 portera.trace(...)
 portera.assert(...)
+portera.dir(...)
 ```
 
 **portera** add some other interesting functions
@@ -141,7 +142,6 @@ portera.assert(...)
 ```js
 portera.group(...) // name your groups
 portera.stack() // trace showing only functions called previously
-portera.dump(...) // dump and object amazing
 portera.btrace(...) // better trace - still working on it
 ```
 
@@ -149,14 +149,14 @@ If no group is specified portera group everything under "portera" group, once a 
 
 Inside of portera web you can filter groups using regexp. Enjoy!!
 
-`portera.dump(...)` dump an object to the console try `portera.dump(console)` or `portera.dump(process)`
+`portera.dir(...)` displays an interactive list of the properties of the specified object. Try `portera.dir(console)` or `portera.dir(process)` also you can enclose a function in an array or object to dump the code,
 
 ```js
 function add(a, b) {
   console.stack();
   return a + b;
 }
-console.dump([add]); // to dump a function
+console.dir([add]);
 ```
 
 ![output](/docs/portera_dump_sample.png)
