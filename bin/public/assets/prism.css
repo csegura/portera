@@ -11,7 +11,8 @@ pre[class*="language-"] {
   color: #b8b8b2;
   background: none;
   /*text-shadow: 0 1px rgba(0, 0, 0, 0.3);*/
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /*font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;*/
   font-size: 1em;
   text-align: left;
   /*
@@ -47,7 +48,6 @@ pre[class*="language-"] {
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-  /* background: #1a202c; */
 }
 
 :not(pre) > code[class*="language-jst"],

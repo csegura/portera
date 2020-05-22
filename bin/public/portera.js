@@ -19,7 +19,7 @@ const btns = {
   trace: true,
   assert: true,
   stack: true,
-  dump: true,
+  dir: true,
 };
 
 // On log received
@@ -28,7 +28,7 @@ socket.on("log", (msg) => {
   msg.delta = logTime - lastTime;
   lastTime = logTime;
   render(msg);
-  save(msg);
+  saveSession(msg);
 });
 
 function parseArgs(elem, args) {
@@ -69,13 +69,8 @@ function clearJson(json) {
  */
 function render(msg) {
   var row = elemRow(msg);
+  setRowVisibility(row);
   $("#log").prepend(row);
-
-  $(row)
-    .get()
-    .forEach((e) => {
-      Prism.highlightAllUnder(e);
-    });
 }
 
 function elemRow(log) {
@@ -113,38 +108,90 @@ function elemContent(log) {
   return div;
 }
 
-/**
- * UI
- */
-$("#clearScreen").click(() => {
-  $("#log").html("");
-});
-
-$("#clearAllLogs").click(() => {
-  localStorage.setItem("logData", []);
-});
-
-/**
- * Session
- */
-function save(msg) {
-  logData.push(msg);
-  const json = JSON.stringify(logData);
-  if (json.length >= 5142880 && json.length < 5146880) {
-    render({
-      kind: "warn",
-      args: "localStorage is near to be full 😱 are you interested in save logs?",
-      time: Number(Date.now()),
-      delta: 0,
-    });
-  }
-  if (json.length < 524000) {
-    localStorage.setItem("logData", json);
+function setRowVisibility(row) {
+  if (collapse) {
+    $(row)
+      .find("a.disclosure:contains(-)")
+      .get()
+      .forEach((e) => e.click(e));
   } else {
-    console.warn(":-( portera has this limitation .. are you interested in save logs? tell me!! ");
-    logData = [];
+    $(row)
+      .get()
+      .forEach((e) => {
+        Prism.highlightAllUnder(e);
+      });
   }
 }
+
+/**
+ * Start
+ */
+$(document).ready(() => {
+  setButtonStatus(true);
+  restoreSession();
+  setDomEvents();
+});
+
+/**
+ * DOM Events
+ */
+function setDomEvents() {
+  // UI filter Buttons
+  Object.keys(btns).forEach((k) => {
+    const key = $("#toogleK" + k);
+    key.click(() => {
+      const elms = $("." + k);
+      btns[k] = !btns[k];
+      btns[k] ? elms.fadeIn(800) : elms.fadeOut(800);
+      setButtonStatus(false);
+    });
+  });
+
+  // Toogle tree
+  $("#toogle").click(() => {
+    var sel = collapse ? "a.disclosure:contains(+)" : "a.disclosure:contains(-)";
+    collapse = !collapse;
+    $(sel)
+      .get()
+      .forEach((e) => e.click(e));
+    setToogleTree();
+  });
+
+  // search group box
+  $("#search").on("change keydown input", () => {
+    filterGroup($("#search").val());
+  });
+
+  // clear screen & session
+  $("#clearScreen").click(() => {
+    $("#log").html("");
+  });
+
+  $("#clearAllLogs").click(() => {
+    localStorage.setItem("logData", []);
+  });
+}
+
+function setButtonStatus(visibles) {
+  Object.keys(btns).forEach((k) => {
+    const button = $("#toogleK" + k);
+    if (btns[k] || visibles) {
+      if (visibles) btns[k] = true;
+      button.text("🔊 " + k);
+    } else {
+      button.text("🔈 " + k);
+    }
+  });
+}
+
+function setToogleTree() {
+  var a = $("#toogle");
+  a.text(collapse ? "🥚" : "🐣");
+}
+
+/**
+ * Groups
+ */
 
 function updateGroups(msg) {
   const group = msg.group;
@@ -173,53 +220,34 @@ function filterGroup(txt) {
   }
 }
 
-function setButtonStatus(visibles) {
-  Object.keys(btns).forEach((k) => {
-    const button = $("#toogleK" + k);
-    if (btns[k] || visibles) {
-      if (visibles) btns[k] = true;
-      button.text("🔊 " + k);
-    } else {
-      button.text("🔈 " + k);
-    }
-  });
+/**
+ * Session
+ */
+function saveSession(msg) {
+  logData.push(msg);
+  const json = JSON.stringify(logData);
+  if (json.length >= 5142880 && json.length < 5146880) {
+    render({
+      kind: "warn",
+      args: "localStorage is near to be full 😱 are you interested in save logs?",
+      time: Number(Date.now()),
+      delta: 0,
+    });
+  }
+  if (json.length < 524000) {
+    localStorage.setItem("logData", json);
+  } else {
+    console.warn(":-( portera has this limitation .. are you interested in save logs? tell me!! ");
+    logData = [];
+  }
 }
 
-/**
- * Start
- */
-$(document).ready(() => {
+function restoreSession() {
   logData = JSON.parse(localStorage.getItem("logData") || "[]");
   if (logData) {
     logData.forEach((e) => render(e));
   }
-
-  // UI Buttons
-  Object.keys(btns).forEach((k) => {
-    const key = $("#toogleK" + k);
-    key.click(() => {
-      const elms = $("." + k);
-      btns[k] = !btns[k];
-      btns[k] ? elms.fadeIn(800) : elms.fadeOut(800);
-      setButtonStatus(false);
-    });
-  });
-
-  // Toogle tree
-  $("#toogle").click(() => {
-    var a = $("#toogle");
-    var sel = collapse ? "a.disclosure:contains(+)" : "a.disclosure:contains(-)";
-    collapse = !collapse;
-    $(sel)
-      .get()
-      .forEach((e) => e.click(e));
-    a.text(a.text() == "🥚" ? "🐣" : "🥚");
-  });
-
-  $("#search").on("change keydown input", () => {
-    filterGroup($("#search").val());
-  });
-});
+}
 
 /**
  *  Parameters
