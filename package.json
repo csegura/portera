@@ -1,7 +1,7 @@
 {
   "name": "portera",
-  "version": "0.1.0",
-  "description": "bored with console logs? Awesome & Remote logs for node",
+  "version": "0.1.1",
+  "description": "Remote awesome logs for node",
   "main": "./lib/portera.js",
   "bin": {
     "portera": "./bin/app.js"
@@ -39,7 +39,8 @@
     "node",
     "remote",
     "console",
-    "alternative"
+    "alternative",
+    "web logs"
   ],
   "bugs": {
     "url": "https://github.com/csegura/portera/issues"
