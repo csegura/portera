@@ -21,7 +21,6 @@ var options = stdio.getopt({
 });
 
 // server
-
 app.use(express.static(public_web));
 
 io.on("connection", (socket) => {
@@ -55,7 +54,7 @@ function serverLog(msg) {
     trace: chalk.white.bgHex("#e53975"),
     assert: chalk.white.bgHex("#a58308"),
     stack: chalk.white.bgHex("#0094b2"),
-    dump: chalk.black.bgHex("#39b4e5"),
+    dir: chalk.black.bgHex("#39b4e5"),
   };
 
   const jsonTheme = {
