@@ -2,11 +2,11 @@
 
 [![Gitter](https://badges.gitter.im/porteralogs/community.svg)](https://gitter.im/porteralogs/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![GitHub version](https://badge.fury.io/gh/csegura%2Fportera.svg)](https://badge.fury.io/gh/csegura%2Fportera) [![github release version](https://img.shields.io/github/v/release/csegura/portera.svg?include_prereleases)](https://github.com/csegura/portera/releases/latest) [![npm version](https://badge.fury.io/js/portera.svg)](https://badge.fury.io/js/portera) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/csegura/portera/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 
-> bored with console logs? **portera**🚀 provides remote logs for you node apps with an awesome style :).
+> **portera**🚀 provides remote logs for you node apps with an awesome style :).
 
 **portera** has two parts, a library that wrap your console object by default, redirecting the output to **portera** server, its receive your data and serve a web page where you can display an awesome output, just like that
 
-![Sample Web](/docs/portera_web_0-1-0.gif)
+![Sample Web](/docs/portera_web_0-1-1.gif)
 
 ## Installation
 
