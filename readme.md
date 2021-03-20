@@ -71,13 +71,14 @@ You can use portera as development tool and later in other environment select th
 ```js
 const portera = require("portera");
 portera({
-  use: ["btrace", "stack", "dir"],
+  use: ["btrace", "stack", "dir", "close"],
   nouse: ["log"]
 });
 
 console.dir(...) // portera dir method
 console.info(...) // console default method
 console.log(...) // will be hidden {}
+console.close() // gracefully close socket
 ```
 
 **portera** should use defaults for host, object, and performance and only will be added to console the specified methods in `use` option, default methods from `console` keep untouched except `log` that is is specified in `nouse` will remain hidden. You can mantain this in your code but deactivated.
@@ -160,6 +161,17 @@ console.dir([add]);
 ```
 
 ![output](/docs/portera_dump_sample.png)
+
+### Close portera socket
+
+In order to close gracefully portera there is a method called "close", this sample http server close portera socket at the end
+
+```js
+server.on("close", function () {
+  console.log("[Server] Stopping ...");
+  console.close();
+});
+```
 
 ### Portera server - command line arguments
 
